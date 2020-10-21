@@ -1,0 +1,202 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Question One
+Load in the data, and have a look at it. How many variables does it have? How many observations? What are the variable names? What type of variables does it have?
+
+```{r}
+
+# Load Tidyverse Library
+library(tidyverse)
+
+```
+
+```{r}
+
+# Read in State Income File and Add to the Environment
+state_income <- read_csv("data/state_income_data.csv")
+
+```
+
+```{r}
+
+# Top 6 Entries
+head(state_income)
+
+```
+
+```{r}
+
+# Data Dimensions
+dim(state_income)
+
+```
+
+```{r}
+
+# Data Names
+names(state_income)
+
+```
+
+```{r}
+
+# Glimpse Data
+glimpse(state_income)
+
+```
+
+# Question Two
+Select the columns which contain the information from years 2002 to 2008. Ensure you keep the Index and State variables as well.
+
+```{r}
+
+# Select the Years 2002 to 2008
+state_income_short <- select(state_income, Index:Y2008)
+
+```
+
+
+```{r}
+
+# View Results
+state_income_short
+
+```
+
+# Question Three
+Rename the Index column to first_letter. Hint: look up the rename() function.
+
+```{r}
+
+# Rename Index Column to first_letter
+state_income_renamed <- rename(state_income_short, first_letter = Index)
+
+```
+
+```{r}
+
+# View
+state_income_renamed
+
+```
+
+# Question Four
+Find the seven states which start with an A,B, or C.
+
+```{r}
+
+# Use the Filter Command
+states_income_ABC <- filter(state_income_renamed, first_letter %in% c("A","B","C"))
+
+```
+
+
+```{r}
+
+# View
+states_income_ABC
+
+```
+
+# Question Five
+Find which of these seven states have the greatest income in 2008.
+
+```{r}
+
+# Create a Pipe (series of functions in one)
+state_income_top <- states_income_ABC %>% # Choose the data file and add to environment
+    select(State, Y2008) %>% # Select data by state and year 2008
+    arrange(desc(Y2008)) # Arrange data by descending order
+
+```
+
+```{r}
+
+# View Results
+state_income_top
+
+```
+
+# Question Six
+Calculate the change in income for each state of these seven states (states starting with A,B, or C) between 2002 and 2008. Save the income change in a new column called income_change.
+
+```{r}
+
+# Add a new column 
+state_income_change <- mutate(states_income_ABC, income_change = Y2008 - Y2002)
+
+
+```
+
+```{r}
+# View
+state_income_change
+
+
+```
+
+# Question Seven
+Find which of these seven states income change is greater than 500,000 (i.e. an increase of 500,000 or decrease of 500,000).
+
+```{r}
+
+# Filter results by increase or decrease of 500,000
+state_change <- filter(state_income_change, income_change > 500000 | income_change < -500000)
+
+```
+
+```{r}
+
+# View results
+state_change
+
+```
+
+# Question Eight
+Calculate the mean and median income change for all seven states.
+
+```{r}
+
+# Summarise the income change by calclating the mean and median
+state_stats <- summarise(state_income_change, # specify which data file to use
+                         income_change_mean = mean(income_change), # calculate the mean of the income_change 
+                         income_change_median = median(income_change)) # calculate the median of the income_change
+
+```
+
+```{r}
+
+# View results
+state_stats
+
+```
+
+# Question Nine
+Go back to the original dataset which contains all states. Write a pipe which selects the State and Y2008 variables, arranges the income from highest to lowest, filters all those states which have a income of greater than 1 million, and then finally chooses the top 10 wealthiest states.
+
+```{r}
+# Create a pipe command from original data file
+highest_income <- state_income %>% # specify data file and add to environment
+  select(State, Y2008) %>% # select the columns 'State' and 'Y2008'
+  arrange(desc(Y2008)) %>% # arrange by descending order
+  filter(Y2008 >=1000000) %>% # filter results of 2008 by greater and or equal to 1 million
+  head(10) # view the top ten results only
+
+```
+
+```{r}
+
+# View results
+highest_income
+
+```
+
+
+
+
+
+
+
