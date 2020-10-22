@@ -21,17 +21,24 @@ movies <- read_csv("data/movies.csv")
 
 A lot of interesting stuff in there! But for now, we are only interested in the movies’ titles, their runtime as well as their budget. Select the three columns that contain this information and save them into a new variable called movies_selected. Hint: you will have to make a choice between original_title and title.
 
+
 ```{r}
-movies_selected <- select(movies, "title", "runtime", "budget")
+movies_selected <- movies %>% 
+  select(title, runtime, budget)
+
+movies_selected
 ```
 
 # Question 3.
 
 Ok, now take your subsetted data movies_selected, and count the number of missing values in each column.
 
+
 ```{r}
 movies_selected %>% 
-  filter(is.na(movies_selected))
+  summarise(na_runtime = sum(is.na(runtime)),
+            na_title = sum(is.na(title)),
+            na_budget = sum(is.na(budget)))
 
 
 ```
@@ -40,10 +47,14 @@ movies_selected %>%
 
 There’s not too many NAs, but there are actually quite a few movies with a runtime of 0 in this dataset. Since it’s impossible for a movie to have a runtime of 0, use the function na_if to convert runtimes of length 0 into NAs. Save this into a new variable called movies_runtime. Then count how many missing values there are now in the column runtime.
 
+
 ```{r}
 
-movies_runtime <- movies %>% 
-  mutate(runtime = na_if(runtime, "0") )
+movies_runtime <- movies_selected %>%
+  mutate(runtime = na_if(runtime, 0))
+
+movies_runtime %>% 
+  summarise(count = sum(is.na(runtime)))
 
 ```
 
@@ -54,8 +65,11 @@ Impute the missing values in runtime with the median runtime using coalesce and 
 
 ```{r}
 
-movies_imputed <- movies %>% 
-  mutate(runtime = coalesce(runtime, mean(runtime)))
+movies_imputed <- movies_runtime %>%  
+  mutate(runtime = coalesce(runtime, median(runtime, na.rm = TRUE)))
+
+movies_imputed %>% 
+  summarise(count = sum(is.na(runtime)))
   
 ```
 
@@ -63,10 +77,17 @@ movies_imputed <- movies %>%
 
 Finally, use the slice_min and slice_max functions on movies_imputed to get the movies with the 10 shortest and 10 longest runtimes
 
+movies_imputed %>% 
+  slice_max(runtime, n = 10)
+
 ```{r}
 
-slice_min(movies_imputed, "10")
-slice_max(movies_imputed, "10")
+movies_imputed %>% 
+  slice_max(runtime, n = 10)
+
+
+movies_imputed %>% 
+  slice_min(runtime, n = 10)
 
 ```
 
@@ -77,11 +98,53 @@ Using the if_else function, impute anything with a budget below $100 with the me
 
 ```{r}
 
-movies %>% 
-  select(budget) %>% 
-  mutate(
-    budget < 100 ~ median(budget)
-  )
+movies_imputed <- movies_imputed %>% 
+  mutate(budget = if_else(budget < 100, median(budget), budget))
+
+movies_imputed
 
 ```
-# end
+
+# Extension
+
+Question 1
+
+Using case_when, create a new column called budget_type and label budgets as follows:
+
+Budgets below 12 million as ‘Small budget’
+Budgets between 12 and 40 million as ‘Medium budget’
+Budgets 40 millions and above as ‘Big budget’
+Save this into a new variable called movie_budgets.
+
+Hint: 1e6 is a shorthand way of writing 1 million (1×106
+)
+
+
+```{r}
+movie_budgets <- movies_imputed %>%
+  mutate(
+    budget_type = case_when(
+      budget < 12e6 ~ "Small budget",
+      budget < 40e6 ~ "Medium budget",
+      budget >= 40e6 ~ "Big budget"
+      )
+    )
+
+movie_budgets
+```
+
+
+Question 2
+
+Take the original dataset with all the variables. Using across and where, summarise the number of missing values, first across all columns of type character, and then across all columns of type numeric.
+
+```{r}
+movies %>%
+  summarise(across(where(is.numeric), ~sum(is.na(.x))))
+
+movies %>%
+  summarise(across(where(is.character), ~sum(is.na(.x))))
+
+```
+
+
