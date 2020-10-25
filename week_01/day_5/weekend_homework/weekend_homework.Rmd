@@ -1,0 +1,219 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Weekend Homework: dplyr
+
+Data File | Goodreads-books
+Brief Description | comprehensive list of all books listed in goodreads
+
+# Stage One - Load Libraries
+
+```{r}
+
+library(tidyverse)
+library(lubridate)
+
+```
+
+# Stage Two - Read in the 'books.csv' File and Assign to the Environment
+
+```{r}
+
+goodreads_books <- read_csv("data/books.csv")
+
+```
+
+# Stage Three - Basic Observations
+
+```{r}
+
+view(goodreads_books) 
+
+# this allows you to view the entire data set
+
+dim(goodreads_books) 
+
+# this checks how many rows and columns in the data set
+
+names(goodreads_books) 
+
+# this tells you what the column titles are
+
+head(goodreads_books, 10) 
+
+# this gives you the first 10 rows by default
+
+tail(goodreads_books, 10) 
+
+# this gives you the last 10 rows by default
+
+```
+
+# Stage Four - Missing Data - General
+
+```{r}
+
+goodreads_books %>% 
+  filter(is.na(goodreads_books)) 
+
+# this function filters the data to check for any 'NAs'
+
+```
+
+# Stage Five - Select Function - General
+
+```{r}
+
+select(goodreads_books, title, average_rating)
+
+# this function selects specific columns to view
+
+```
+
+# Stage Six - Filter Function - Stephen King
+
+```{r}
+
+  filter(goodreads_books, authors == "Stephen King",
+       ratings_count > 100000
+       & average_rating >= 4)
+  
+
+# this function allows you to filter and view all Stephen King books that
+# have a ratings count of over 100,000
+# AND have an average rating that equal to 4 and above
+
+```
+
+# Stage Seven - Arrange Function - Stephen King
+
+```{r}
+
+top_five_stephen_king <- goodreads_books %>%
+  filter(authors == "Stephen King",
+       ratings_count > 100000
+       & average_rating >= 4) %>% 
+  arrange(desc(average_rating)) %>% 
+  select(title, authors, average_rating, ratings_count)
+
+# this function allows you to arrange the average rating by 
+# descending order AND select four specific columns
+
+```
+
+# Stage Eight - Mutate Function Stephen King
+
+```{r}
+
+top_five_stephen_king <- top_five_stephen_king %>%
+  filter(authors == "Stephen King",
+       ratings_count > 100000
+       & average_rating >= 4) %>% 
+  arrange(desc(average_rating)) %>% 
+  select(title, authors, average_rating, ratings_count) %>% 
+  mutate(
+    high_or_low_rating_count = case_when(
+      ratings_count < 250000 ~ "Low",
+      ratings_count >= 250000 ~ "High"))
+
+# this function adds a new column that tells you what book 
+# has had a 'high' number of ratings or a 'low' number of ratings
+
+```
+
+# Stage Nine - Mutate Function - General
+
+```{r}
+
+goodreads_books_rating_count <- goodreads_books %>% 
+mutate(
+  high_or_low_rating_count = case_when(
+  ratings_count < 500000 ~ "Very Low Count",
+  ratings_count < 1000000 ~ "Low Count",
+  ratings_count < 1500000 ~ "Medium Count",
+  ratings_count < 2000000 ~ "High Count",
+  ratings_count >= 2000000 ~ "Very High Count"
+  )
+)
+         
+# this function groups the ratings count in increments of 500,000
+# a ratings count up to 500,000 is very low
+# a ratings count from 500,000 to 1 million is low
+# a ratings count from 1 million to 1.5 million is medium
+# a ratings count from 1.5 million to 2 million is high AND
+# a ratings count over 2 million is very high
+
+```
+# Stage Ten - Top Five ALL Books
+
+```{r}
+top_five_books <- goodreads_books_rating_count %>% 
+  filter(high_or_low_rating_count == "Very High Count",
+       average_rating >= 4) %>% 
+  arrange(desc(average_rating)) %>% 
+  head(5) %>% 
+  select(title, authors, average_rating, ratings_count, high_or_low_rating_count)
+
+```
+
+# Stage Eleven - Top Five 90's Books
+
+```{r}
+
+goodreads_books_dates <- goodreads_books_rating_count %>% 
+mutate(publication_date = (mdy(publication_date)))
+
+top_five_90s <- goodreads_books_dates %>%
+  filter(publication_date >= "1990-01-01" &
+           publication_date <= "1999-12-29",
+         ratings_count > 850000) %>% 
+  arrange(desc(average_rating)) %>% 
+  select(title, authors, average_rating, ratings_count, high_or_low_rating_count)
+
+```
+
+# Stage Twelve - Top Five Penguin Books
+
+```{r}
+
+top_five_penguin_books <- goodreads_books_dates %>%
+    filter(publisher %in% c("Penguin", "Penguin Classics", "Penguin Books",
+                            "Penguin Books Ltd", "Penguin Press"), 
+           ratings_count > 800000) %>%
+  arrange(desc(average_rating)) %>% 
+  select(publisher, title, authors, average_rating, ratings_count, 
+         high_or_low_rating_count)
+  
+```
+
+# Stage Thirteen - Top Five Reviewed
+
+```{r}
+
+top_five_reviewed <- goodreads_books_rating_count %>%
+  filter(text_reviews_count >= 30000, 
+         ratings_count >= 1700000) %>%
+  arrange(desc(average_rating)) %>%
+  select(title, authors, publisher, text_reviews_count, average_rating, 
+         ratings_count, high_or_low_rating_count)
+  
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
