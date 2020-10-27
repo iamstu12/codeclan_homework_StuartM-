@@ -1749,21 +1749,45 @@ summary {
 
 
 <!-- rnb-text-begin -->
-<div id="step-1---load-library" class="section level1">
-<h1>step 1 - load library</h1>
+<div id="load-library" class="section level1">
+<h1>load library</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmxpYnJhcnkoamFuaXRvcilcblxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmBgYCJ9 -->
 <pre class="r"><code>
-library(tidyverse)
-library(janitor)
-</code></pre>
+library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxu4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4wIOKUgOKUgFxu4pyTIGdncGxvdDIgMy4zLjIgICAgIOKckyBwdXJyciAgIDAuMy40XG7inJMgdGliYmxlICAzLjAuMyAgICAg4pyTIGRwbHlyICAgMS4wLjJcbuKckyB0aWR5ciAgIDEuMS4yICAgICDinJMgc3RyaW5nciAxLjQuMFxu4pyTIHJlYWRyICAgMS40LjAgICAgIOKckyBmb3JjYXRzIDAuNS4wXG5wYWNrYWdlIOKAmGdncGxvdDLigJkgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiAzLjYuMnBhY2thZ2Ug4oCYdGliYmxl4oCZIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy42LjJwYWNrYWdlIOKAmHRpZHly4oCZIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy42LjJwYWNrYWdlIOKAmHJlYWRy4oCZIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy42LjJwYWNrYWdlIOKAmHB1cnJy4oCZIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy42LjJwYWNrYWdlIOKAmGRwbHly4oCZIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy42LjLilIDilIAgQ29uZmxpY3RzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG54IGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbnggZHBseXI6OmxhZygpICAgIG1hc2tzIHN0YXRzOjpsYWcoKVxuIn0= -->
+<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
+  method         from
+  print.tbl_lazy     
+  print.tbl_sql      
+── Attaching packages ────────────────────────────────── tidyverse 1.3.0 ──
+✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+✓ tibble  3.0.3     ✓ dplyr   1.0.2
+✓ tidyr   1.1.2     ✓ stringr 1.4.0
+✓ readr   1.4.0     ✓ forcats 0.5.0
+package ‘ggplot2’ was built under R version 3.6.2package ‘tibble’ was built under R version 3.6.2package ‘tidyr’ was built under R version 3.6.2package ‘readr’ was built under R version 3.6.2package ‘purrr’ was built under R version 3.6.2package ‘dplyr’ was built under R version 3.6.2── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShqYW5pdG9yKVxuYGBgIn0= -->
+<pre class="r"><code>library(janitor)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoicGFja2FnZSDigJhqYW5pdG9y4oCZIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy42LjJcbkF0dGFjaGluZyBwYWNrYWdlOiDigJhqYW5pdG9y4oCZXG5cblRoZSBmb2xsb3dpbmcgb2JqZWN0cyBhcmUgbWFza2VkIGZyb20g4oCYcGFja2FnZTpzdGF0c+KAmTpcblxuICAgIGNoaXNxLnRlc3QsIGZpc2hlci50ZXN0XG4ifQ== -->
+<pre><code>package ‘janitor’ was built under R version 3.6.2
+Attaching package: ‘janitor’
+
+The following objects are masked from ‘package:stats’:
+
+    chisq.test, fisher.test</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="question-1---read-in-all-4-credit-card-transaction-datasets-and-clean-column-names." class="section level1">
-<h1>question 1 - Read in all 4 credit card transaction datasets and clean column names.</h1>
+<div id="question-1" class="section level1">
+<h1>question 1</h1>
+<p>Read in all 4 credit card transaction datasets and clean column names.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jYXJkX2Jhc2UgPC0gcmVhZF9jc3YoXCJkYXRhL0NhcmRCYXNlLmNzdlwiKSAlPiVcbiAgY2xlYW5fbmFtZXMoKVxuYGBgIn0= -->
@@ -1771,14 +1795,67 @@ library(janitor)
 card_base &lt;- read_csv(&quot;data/CardBase.csv&quot;) %&gt;%
   clean_names()</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6ICdkYXRhL0NhcmRCYXNlLmNzdicgZG9lcyBub3QgZXhpc3QgaW4gY3VycmVudCB3b3JraW5nIGRpcmVjdG9yeSAoJy9Vc2Vycy9OYXRpZnUvRGF0YSBBbmFseXNpcy9jb2RlY2xhbl9ob21ld29ya19TdHVhcnRNL3dlZWtfMDInKS5cbiJ9 -->
-<pre><code>Error: &#39;data/CardBase.csv&#39; does not exist in current working directory (&#39;/Users/Natifu/Data Analysis/codeclan_homework_StuartM/week_02&#39;).</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiXG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5jb2xzKFxuICBDYXJkX051bWJlciA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgQ2FyZF9GYW1pbHkgPSBjb2xfY2hhcmFjdGVyKCksXG4gIENyZWRpdF9MaW1pdCA9IGNvbF9kb3VibGUoKSxcbiAgQ3VzdF9JRCA9IGNvbF9jaGFyYWN0ZXIoKVxuKVxuIn0= -->
+<pre><code>
+── Column specification ───────────────────────────────────────────────────
+cols(
+  Card_Number = col_character(),
+  Card_Family = col_character(),
+  Credit_Limit = col_double(),
+  Cust_ID = col_character()
+)</code></pre>
 <!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY3VzdG9tZXJfYmFzZSA8LSByZWFkX2NzdihcImRhdGEvQ3VzdG9tZXJCYXNlLmNzdlwiKSAlPiVcbiAgY2xlYW5fbmFtZXMoKVxuYGBgIn0= -->
+<pre class="r"><code>customer_base &lt;- read_csv(&quot;data/CustomerBase.csv&quot;) %&gt;%
+  clean_names()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5jb2xzKFxuICBDdXN0X0lEID0gY29sX2NoYXJhY3RlcigpLFxuICBBZ2UgPSBjb2xfZG91YmxlKCksXG4gIEN1c3RvbWVyX1NlZ21lbnQgPSBjb2xfY2hhcmFjdGVyKCksXG4gIEN1c3RvbWVyX1ZpbnRhZ2VfR3JvdXAgPSBjb2xfY2hhcmFjdGVyKClcbilcbiJ9 -->
+<pre><code>
+── Column specification ───────────────────────────────────────────────────
+cols(
+  Cust_ID = col_character(),
+  Age = col_double(),
+  Customer_Segment = col_character(),
+  Customer_Vintage_Group = col_character()
+)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZnJhdWRfYmFzZSA8LSByZWFkX2NzdihcImRhdGEvRnJhdWRCYXNlLmNzdlwiKSAlPiVcbiAgY2xlYW5fbmFtZXMoKVxuYGBgIn0= -->
+<pre class="r"><code>fraud_base &lt;- read_csv(&quot;data/FraudBase.csv&quot;) %&gt;%
+  clean_names()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5jb2xzKFxuICBUcmFuc2FjdGlvbl9JRCA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgRnJhdWRfRmxhZyA9IGNvbF9kb3VibGUoKVxuKVxuIn0= -->
+<pre><code>
+── Column specification ───────────────────────────────────────────────────
+cols(
+  Transaction_ID = col_character(),
+  Fraud_Flag = col_double()
+)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHJhbnNhY3Rpb25fYmFzZSA8LSByZWFkX2NzdihcImRhdGEvVHJhbnNhY3Rpb25CYXNlLmNzdlwiKSAlPiVcbiAgY2xlYW5fbmFtZXMoKVxuYGBgIn0= -->
+<pre class="r"><code>transaction_base &lt;- read_csv(&quot;data/TransactionBase.csv&quot;) %&gt;%
+  clean_names()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5jb2xzKFxuICBUcmFuc2FjdGlvbl9JRCA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgVHJhbnNhY3Rpb25fRGF0ZSA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgQ3JlZGl0X0NhcmRfSUQgPSBjb2xfY2hhcmFjdGVyKCksXG4gIFRyYW5zYWN0aW9uX1ZhbHVlID0gY29sX2RvdWJsZSgpLFxuICBUcmFuc2FjdGlvbl9TZWdtZW50ID0gY29sX2NoYXJhY3RlcigpXG4pXG4ifQ== -->
+<pre><code>
+── Column specification ───────────────────────────────────────────────────
+cols(
+  Transaction_ID = col_character(),
+  Transaction_Date = col_character(),
+  Credit_Card_ID = col_character(),
+  Transaction_Value = col_double(),
+  Transaction_Segment = col_character()
+)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBwbGVhc2Ugbm90ZSB0aGF0ICdjbGVhbl9uYW1lcycgdXNlcyB0aGUgJ2phbml0b3InIGxpYnJhcnlcblxuYGBgIn0= -->
+<pre class="r"><code># please note that &#39;clean_names&#39; uses the &#39;janitor&#39; library
+</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="question-2---join-the-data-containing-card-details-and-customer-details-by-customer-id-so-that-all-records-of-card-details-and-any-matching-records-in-customer-details-are-kept.-before-you-run-the-code-think-about-how-many-rows-you-expect-to-see-after-joining." class="section level1">
-<h1>question 2 - Join the data containing card details and customer details by customer id, so that all records of card details and any matching records in customer details are kept. Before you run the code, think about how many rows you expect to see after joining.</h1>
+<div id="question-2" class="section level1">
+<h1>question 2</h1>
+<p>Join the data containing card details and customer details by customer id, so that all records of card details and any matching records in customer details are kept. Before you run the code, think about how many rows you expect to see after joining.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jdXN0b21lcl9jYXJkIDwtIGxlZnRfam9pbihjYXJkX2Jhc2UsIGN1c3RvbWVyX2Jhc2UsIFwiY3VzdF9pZFwiKVxuXG5gYGAifQ== -->
@@ -1789,8 +1866,9 @@ customer_card &lt;- left_join(card_base, customer_base, &quot;cust_id&quot;)
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="question-3---join-the-data-containing-fraud-details-with-transaction-details-so-all-rows-of-both-tables-are-kept.-what-does-the-resulting-row-number-tell-you" class="section level1">
-<h1>question 3 - Join the data containing fraud details with transaction details so all rows of both tables are kept. What does the resulting row number tell you?</h1>
+<div id="question-3" class="section level1">
+<h1>question 3</h1>
+<p>Join the data containing fraud details with transaction details so all rows of both tables are kept. What does the resulting row number tell you?</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5mcmF1ZF90cmFuc2FjdGlvbiA8LSBmdWxsX2pvaW4oZnJhdWRfYmFzZSwgdHJhbnNhY3Rpb25fYmFzZSwgXG4gICAgICAgICAgICAgICAgICAgICAgYnkgPSBcInRyYW5zYWN0aW9uX2lkXCIpXG5cbmBgYCJ9 -->
@@ -1802,38 +1880,73 @@ fraud_transaction &lt;- full_join(fraud_base, transaction_base,
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="question-4---join-the-data-containing-card-details-with-transaction-details-so-rows-from-the-first-which-have-matching-ones-in-the-second-are-returned-but-only-return-rows-in-the-first-table-once." class="section level1">
-<h1>question 4 - Join the data containing card details with transaction details so rows from the first which have matching ones in the second are returned, but only return rows in the first table once.</h1>
+<div id="question-4" class="section level1">
+<h1>question 4</h1>
+<p>Join the data containing card details with transaction details so rows from the first which have matching ones in the second are returned, but only return rows in the first table once.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jYXJkX3RyYXNhY3Rpb24gPC0gc2VtaV9qb2luKGNhcmRfYmFzZSwgdHJhbnNhY3Rpb25fYmFzZSwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJ5ID0gYyhcImNhcmRfbnVtYmVyXCIgPSBcImNyZWRpdF9jYXJkX2lkXCIpKVxuXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jYXJkX3RyYW5zYWN0aW9uIDwtIHNlbWlfam9pbihjYXJkX2Jhc2UsIHRyYW5zYWN0aW9uX2Jhc2UsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICBieSA9IGMoXCJjYXJkX251bWJlclwiID0gXCJjcmVkaXRfY2FyZF9pZFwiKSlcblxuXG5gYGAifQ== -->
 <pre class="r"><code>
-card_trasaction &lt;- semi_join(card_base, transaction_base, 
+card_transaction &lt;- semi_join(card_base, transaction_base, 
                              by = c(&quot;card_number&quot; = &quot;credit_card_id&quot;))
 </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="question-5---read-in-hat_observations-and-separate-observation-into-two-columns-hat_colour-and-hat_type." class="section level1">
-<h1>question 5 - Read in hat_observations and separate observation into two columns, hat_colour and hat_type.</h1>
-<p>hospital_visits_coded &lt;- hospital_visits_wide %&gt;% separate(IcdChapter, c(“code”, “description”), sep = “\.” )</p>
+<div id="question-5" class="section level1">
+<h1>question 5</h1>
+<p>Read in hat_observations and separate observation into two columns, hat_colour and hat_type.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5oYXQgPC0gcmVhZF9jc3YoXCJkYXRhL2hhdF9vYnNlcnZhdGlvbnMuY3N2XCIpXG5gYGAifQ== -->
+<pre class="r"><code>
+hat &lt;- read_csv(&quot;data/hat_observations.csv&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5jb2xzKFxuICBkYXkgPSBjb2xfZG91YmxlKCksXG4gIG1vbnRoID0gY29sX2RvdWJsZSgpLFxuICB5ZWFyID0gY29sX2RvdWJsZSgpLFxuICBvYnNlcnZhdGlvbiA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgb2JzZXJ2YXRpb25fY291bnQgPSBjb2xfZG91YmxlKClcbilcbiJ9 -->
+<pre><code>
+── Column specification ───────────────────────────────────────────────────
+cols(
+  day = col_double(),
+  month = col_double(),
+  year = col_double(),
+  observation = col_character(),
+  observation_count = col_double()
+)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGF0X3NlcGFyYXRlZCA8LSBoYXQgJT4lXG4gIHNlcGFyYXRlKG9ic2VydmF0aW9uLCBjKFwiaGF0X2NvbG91clwiLCBcImhhdF90eXBlXCIpLFxuICAgICAgICAgICBzZXAgPSBcIixcIilcblxuYGBgIn0= -->
+<pre class="r"><code>hat_separated &lt;- hat %&gt;%
+  separate(observation, c(&quot;hat_colour&quot;, &quot;hat_type&quot;),
+           sep = &quot;,&quot;)
+</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="question-6---unite-day-month-and-year-columns-into-a-column-called-date-using-a-suitable-separator.-then-find-the-date-where-the-most-berets-were-observed." class="section level1">
-<h1>question 6 - Unite day, month, and year columns into a column called date using a suitable separator. Then find the date where the most berets were observed.</h1>
-<p>hospital_visits_unite &lt;- hospital_visits_coded %&gt;% unite(disease, c(“code”, “description”), sep =“:”)</p>
+<div id="question-6" class="section level1">
+<h1>question 6</h1>
+<p>Unite day, month, and year columns into a column called date using a suitable separator. Then find the date where the most berets were observed.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5oYXRfdW5pdGUgPC0gaGF0X3NlcGFyYXRlZCAlPiVcbiAgdW5pdGUoZGF0ZSwgYyhcImRheVwiLCBcIm1vbnRoXCIsIFwieWVhclwiKSxcbiAgICAgICAgc2VwID0gXCItXCIpICU+JVxuICBmaWx0ZXIoaGF0X3R5cGUgPT0gXCJiZXJldFwiKSAlPiVcbiAgZ3JvdXBfYnkoZGF0ZSkgJT4lXG4gIHN1bW1hcmlzZSh0b3RhbCA9IHN1bShvYnNlcnZhdGlvbl9jb3VudCkpICU+JVxuICBhcnJhbmdlKGRlc2ModG90YWwpKVxuYGBgIn0= -->
+<pre class="r"><code>
+hat_unite &lt;- hat_separated %&gt;%
+  unite(date, c(&quot;day&quot;, &quot;month&quot;, &quot;year&quot;),
+        sep = &quot;-&quot;) %&gt;%
+  filter(hat_type == &quot;beret&quot;) %&gt;%
+  group_by(date) %&gt;%
+  summarise(total = sum(observation_count)) %&gt;%
+  arrange(desc(total))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCB1bmdyb3VwaW5nIG91dHB1dCAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG4ifQ== -->
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKIyBzdGVwIDEgLSBsb2FkIGxpYnJhcnkKCmBgYHtyfQoKbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkoamFuaXRvcikKCmBgYAoKCgoKIyBxdWVzdGlvbiAxIC0gUmVhZCBpbiBhbGwgNCBjcmVkaXQgY2FyZCB0cmFuc2FjdGlvbiBkYXRhc2V0cyBhbmQgY2xlYW4gY29sdW1uIG5hbWVzLgoKYGBge3J9CgpjYXJkX2Jhc2UgPC0gcmVhZF9jc3YoImRhdGEvQ2FyZEJhc2UuY3N2IikgJT4lCiAgY2xlYW5fbmFtZXMoKQoKY3VzdG9tZXJfYmFzZSA8LSByZWFkX2NzdigiZGF0YS9DdXN0b21lckJhc2UuY3N2IikgJT4lCiAgY2xlYW5fbmFtZXMoKQoKZnJhdWRfYmFzZSA8LSByZWFkX2NzdigiZGF0YS9GcmF1ZEJhc2UuY3N2IikgJT4lCiAgY2xlYW5fbmFtZXMoKQoKdHJhbnNhY3Rpb25fYmFzZSA8LSByZWFkX2NzdigiZGF0YS9UcmFuc2FjdGlvbkJhc2UuY3N2IikgJT4lCiAgY2xlYW5fbmFtZXMoKQoKCmBgYAoKCgoKIyBxdWVzdGlvbiAyIC0gSm9pbiB0aGUgZGF0YSBjb250YWluaW5nIGNhcmQgZGV0YWlscyBhbmQgY3VzdG9tZXIgZGV0YWlscyBieSBjdXN0b21lciBpZCwgc28gdGhhdCBhbGwgcmVjb3JkcyBvZiBjYXJkIGRldGFpbHMgYW5kIGFueSBtYXRjaGluZyByZWNvcmRzIGluIGN1c3RvbWVyIGRldGFpbHMgYXJlIGtlcHQuIEJlZm9yZSB5b3UgcnVuIHRoZSBjb2RlLCB0aGluayBhYm91dCBob3cgbWFueSByb3dzIHlvdSBleHBlY3QgdG8gc2VlIGFmdGVyIGpvaW5pbmcuCgpgYGB7cn0KCmN1c3RvbWVyX2NhcmQgPC0gbGVmdF9qb2luKGNhcmRfYmFzZSwgY3VzdG9tZXJfYmFzZSwgImN1c3RfaWQiKQoKYGBgCgojIHF1ZXN0aW9uIDMgLSBKb2luIHRoZSBkYXRhIGNvbnRhaW5pbmcgZnJhdWQgZGV0YWlscyB3aXRoIHRyYW5zYWN0aW9uIGRldGFpbHMgc28gYWxsIHJvd3Mgb2YgYm90aCB0YWJsZXMgYXJlIGtlcHQuIFdoYXQgZG9lcyB0aGUgcmVzdWx0aW5nIHJvdyBudW1iZXIgdGVsbCB5b3U/IAoKYGBge3J9CgpmcmF1ZF90cmFuc2FjdGlvbiA8LSBmdWxsX2pvaW4oZnJhdWRfYmFzZSwgdHJhbnNhY3Rpb25fYmFzZSwgCiAgICAgICAgICAgICAgICAgICAgICBieSA9ICJ0cmFuc2FjdGlvbl9pZCIpCgpgYGAKCiMgcXVlc3Rpb24gNCAtIEpvaW4gdGhlIGRhdGEgY29udGFpbmluZyBjYXJkIGRldGFpbHMgd2l0aCB0cmFuc2FjdGlvbiBkZXRhaWxzIHNvIHJvd3MgZnJvbSB0aGUgZmlyc3Qgd2hpY2ggaGF2ZSBtYXRjaGluZyBvbmVzIGluIHRoZSBzZWNvbmQgYXJlIHJldHVybmVkLCBidXQgb25seSByZXR1cm4gcm93cyBpbiB0aGUgZmlyc3QgdGFibGUgb25jZS4KCmBgYHtyfQoKY2FyZF90cmFzYWN0aW9uIDwtIHNlbWlfam9pbihjYXJkX2Jhc2UsIHRyYW5zYWN0aW9uX2Jhc2UsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJ5ID0gYygiY2FyZF9udW1iZXIiID0gImNyZWRpdF9jYXJkX2lkIikpCgpgYGAKCiMgcXVlc3Rpb24gNSAtIFJlYWQgaW4gaGF0X29ic2VydmF0aW9ucyBhbmQgc2VwYXJhdGUgb2JzZXJ2YXRpb24gaW50byB0d28gY29sdW1ucywgaGF0X2NvbG91ciBhbmQgaGF0X3R5cGUuCgpob3NwaXRhbF92aXNpdHNfY29kZWQgPC0gaG9zcGl0YWxfdmlzaXRzX3dpZGUgJT4lCiAgc2VwYXJhdGUoSWNkQ2hhcHRlciwgYygiY29kZSIsICJkZXNjcmlwdGlvbiIpLCBzZXAgPSAiXFwuIiApCgoKYGBge3J9CgpoYXQgPC0gcmVhZF9jc3YoImRhdGEvaGF0X29ic2VydmF0aW9ucy5jc3YiKQoKaGF0X3NlcGFyYXRlZCA8LSBoYXQgJT4lCiAgc2VwYXJhdGUob2JzZXJ2YXRpb24sIGMoImhhdF9jb2xvdXIiLCAiaGF0X3R5cGUiKSwKICAgICAgICAgICBzZXAgPSAiLCIpCgpgYGAKCiMgcXVlc3Rpb24gNiAtIFVuaXRlIGRheSwgbW9udGgsIGFuZCB5ZWFyIGNvbHVtbnMgaW50byBhIGNvbHVtbiBjYWxsZWQgZGF0ZSB1c2luZyBhIHN1aXRhYmxlIHNlcGFyYXRvci4gVGhlbiBmaW5kIHRoZSBkYXRlIHdoZXJlIHRoZSBtb3N0IGJlcmV0cyB3ZXJlIG9ic2VydmVkLgoKaG9zcGl0YWxfdmlzaXRzX3VuaXRlIDwtIGhvc3BpdGFsX3Zpc2l0c19jb2RlZCAlPiUKICB1bml0ZShkaXNlYXNlLCBjKCJjb2RlIiwgImRlc2NyaXB0aW9uIiksIHNlcCA9IjoiKQoKYGBge3J9CgpoYXRfdW5pdGUgPC0gaGF0X3NlcGFyYXRlZCAlPiUKICB1bml0ZShkYXRlLCBjKCJkYXkiLCAibW9udGgiLCAieWVhciIpLAogICAgICAgIHNlcCA9ICItIikgJT4lCiAgZmlsdGVyKGhhdF90eXBlID09ICJiZXJldCIpICU+JQogIGdyb3VwX2J5KGRhdGUpICU+JQogIHN1bW1hcmlzZSh0b3RhbCA9IHN1bShvYnNlcnZhdGlvbl9jb3VudCkpICU+JQogIGFycmFuZ2UoZGVzYyh0b3RhbCkpCiAgCmBgYAoKCgoKCgoKCgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKIyBsb2FkIGxpYnJhcnkKCmBgYHtyfQoKbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkoamFuaXRvcikKCmBgYAoKIyBxdWVzdGlvbiAxCgpSZWFkIGluIGFsbCA0IGNyZWRpdCBjYXJkIHRyYW5zYWN0aW9uIGRhdGFzZXRzIGFuZCBjbGVhbiBjb2x1bW4gbmFtZXMuCgpgYGB7cn0KCmNhcmRfYmFzZSA8LSByZWFkX2NzdigiZGF0YS9DYXJkQmFzZS5jc3YiKSAlPiUKICBjbGVhbl9uYW1lcygpCgpjdXN0b21lcl9iYXNlIDwtIHJlYWRfY3N2KCJkYXRhL0N1c3RvbWVyQmFzZS5jc3YiKSAlPiUKICBjbGVhbl9uYW1lcygpCgpmcmF1ZF9iYXNlIDwtIHJlYWRfY3N2KCJkYXRhL0ZyYXVkQmFzZS5jc3YiKSAlPiUKICBjbGVhbl9uYW1lcygpCgp0cmFuc2FjdGlvbl9iYXNlIDwtIHJlYWRfY3N2KCJkYXRhL1RyYW5zYWN0aW9uQmFzZS5jc3YiKSAlPiUKICBjbGVhbl9uYW1lcygpCgojIHBsZWFzZSBub3RlIHRoYXQgJ2NsZWFuX25hbWVzJyB1c2VzIHRoZSAnamFuaXRvcicgbGlicmFyeQoKYGBgCgojIHF1ZXN0aW9uIDIKCkpvaW4gdGhlIGRhdGEgY29udGFpbmluZyBjYXJkIGRldGFpbHMgYW5kIGN1c3RvbWVyIGRldGFpbHMgYnkgY3VzdG9tZXIgaWQsIHNvIHRoYXQgYWxsIHJlY29yZHMgb2YgY2FyZCBkZXRhaWxzIGFuZCBhbnkgbWF0Y2hpbmcgcmVjb3JkcyBpbiBjdXN0b21lciBkZXRhaWxzIGFyZSBrZXB0LiBCZWZvcmUgeW91IHJ1biB0aGUgY29kZSwgdGhpbmsgYWJvdXQgaG93IG1hbnkgcm93cyB5b3UgZXhwZWN0IHRvIHNlZSBhZnRlciBqb2luaW5nLgoKYGBge3J9CgpjdXN0b21lcl9jYXJkIDwtIGxlZnRfam9pbihjYXJkX2Jhc2UsIGN1c3RvbWVyX2Jhc2UsICJjdXN0X2lkIikKCmBgYAoKCgojIHF1ZXN0aW9uIDMKCkpvaW4gdGhlIGRhdGEgY29udGFpbmluZyBmcmF1ZCBkZXRhaWxzIHdpdGggdHJhbnNhY3Rpb24gZGV0YWlscyBzbyBhbGwgcm93cyBvZiBib3RoIHRhYmxlcyBhcmUga2VwdC4gV2hhdCBkb2VzIHRoZSByZXN1bHRpbmcgcm93IG51bWJlciB0ZWxsIHlvdT8KCmBgYHtyfQoKZnJhdWRfdHJhbnNhY3Rpb24gPC0gZnVsbF9qb2luKGZyYXVkX2Jhc2UsIHRyYW5zYWN0aW9uX2Jhc2UsIAogICAgICAgICAgICAgICAgICAgICAgYnkgPSAidHJhbnNhY3Rpb25faWQiKQoKYGBgCgojIHF1ZXN0aW9uIDQKCkpvaW4gdGhlIGRhdGEgY29udGFpbmluZyBjYXJkIGRldGFpbHMgd2l0aCB0cmFuc2FjdGlvbiBkZXRhaWxzIHNvIHJvd3MgZnJvbSB0aGUgZmlyc3Qgd2hpY2ggaGF2ZSBtYXRjaGluZyBvbmVzIGluIHRoZSBzZWNvbmQgYXJlIHJldHVybmVkLCBidXQgb25seSByZXR1cm4gcm93cyBpbiB0aGUgZmlyc3QgdGFibGUgb25jZS4KCmBgYHtyfQoKY2FyZF90cmFuc2FjdGlvbiA8LSBzZW1pX2pvaW4oY2FyZF9iYXNlLCB0cmFuc2FjdGlvbl9iYXNlLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBieSA9IGMoImNhcmRfbnVtYmVyIiA9ICJjcmVkaXRfY2FyZF9pZCIpKQoKCmBgYAoKIyBxdWVzdGlvbiA1CgpSZWFkIGluIGhhdF9vYnNlcnZhdGlvbnMgYW5kIHNlcGFyYXRlIG9ic2VydmF0aW9uIGludG8gdHdvIGNvbHVtbnMsIGhhdF9jb2xvdXIgYW5kIGhhdF90eXBlLgoKYGBge3J9CgpoYXQgPC0gcmVhZF9jc3YoImRhdGEvaGF0X29ic2VydmF0aW9ucy5jc3YiKQoKaGF0X3NlcGFyYXRlZCA8LSBoYXQgJT4lCiAgc2VwYXJhdGUob2JzZXJ2YXRpb24sIGMoImhhdF9jb2xvdXIiLCAiaGF0X3R5cGUiKSwKICAgICAgICAgICBzZXAgPSAiLCIpCgpgYGAKCiMgcXVlc3Rpb24gNgoKVW5pdGUgZGF5LCBtb250aCwgYW5kIHllYXIgY29sdW1ucyBpbnRvIGEgY29sdW1uIGNhbGxlZCBkYXRlIHVzaW5nIGEgc3VpdGFibGUgc2VwYXJhdG9yLiBUaGVuIGZpbmQgdGhlIGRhdGUgd2hlcmUgdGhlIG1vc3QgYmVyZXRzIHdlcmUgb2JzZXJ2ZWQuCgpgYGB7cn0KCmhhdF91bml0ZSA8LSBoYXRfc2VwYXJhdGVkICU+JQogIHVuaXRlKGRhdGUsIGMoImRheSIsICJtb250aCIsICJ5ZWFyIiksCiAgICAgICAgc2VwID0gIi0iKSAlPiUKICBmaWx0ZXIoaGF0X3R5cGUgPT0gImJlcmV0IikgJT4lCiAgZ3JvdXBfYnkoZGF0ZSkgJT4lCiAgc3VtbWFyaXNlKHRvdGFsID0gc3VtKG9ic2VydmF0aW9uX2NvdW50KSkgJT4lCiAgYXJyYW5nZShkZXNjKHRvdGFsKSkKCmBgYAoK</div>
 
 
 
@@ -1880,7 +1993,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("joins_and_tidy_homework_week_2.Rmd");
+  window.initializeSourceEmbed("week_2_day_1_homework.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
