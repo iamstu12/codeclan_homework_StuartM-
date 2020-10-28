@@ -1,0 +1,210 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# 1
+
+Find the weather forecast for the next three days Each list element should have the name of the day of the week. Inside each element should be another named list that tells you the temperature, chance of rain and wind speed.
+
+
+```{r}
+
+three_day_forecast <- list(
+  "Thursday" = list(temperature = 14, chance_of_rain = 90, wind_speed = 25),
+  "Friday" = list(temperature = 13, chance_of_rain = 20, wind_speed = 23),
+  "Saturday" = list(temperature = 13, chance_of_rain = 70, wind_speed = 29)
+)
+
+three_day_forecast
+
+```
+
+# 2
+
+Using the list you’ve just made find:
+
+The chance of rain tomorrow
+The wind speed on the day after tomorrow
+The temperature tomorrow.
+
+```{r}
+
+# chance of rain on thursday
+
+three_day_forecast$Thursday$chance_of_rain
+
+# wind speed on friday
+
+three_day_forecast$Friday$wind_speed
+
+# temperature thursday
+
+three_day_forecast$Thursday$temperature
+
+```
+
+# 3
+
+Find a 14 day forecast and create a matrix of the forecasts for temperature, where each week is one row.
+
+You will want to give a name to the matrix you create.
+
+```{r}
+
+fourteen_day_forecast <- matrix(c(14, 13, 14, 11, 10, 9, 10, 11, 11, 10, 9, 9, 8, 8), 
+                                nrow = 2, ncol = 7,
+                                byrow = TRUE)
+
+col_names <- c("Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday")
+row_names <- c("This Week", "Next Week")
+
+colnames(fourteen_day_forecast) <- col_names
+rownames(fourteen_day_forecast) <- row_names
+
+
+
+fourteen_day_forecast
+
+```
+
+# 4
+
+Now select:
+
+The third day of the second week
+The whole second week
+The first, third and fifth days in both weeks.
+
+```{r}
+
+# third day of the second week
+
+fourteen_day_forecast[2,3]
+
+# whole second week
+
+fourteen_day_forecast[2,]
+
+# first, third, fifth
+
+fourteen_day_forecast[,c(1,3,5)]
+
+
+
+```
+
+# 5
+
+Write a function that pre-appends “The answer is:” to any character input, and either returns the number for numbers less than 10, or divides the number by 10 for numbers greater than 10. For anything else return “Invalid input”.
+
+# functions that worked
+
+
+```{r}
+
+pre_appends <- function(x)
+  paste("The answer is", x, sep = " ")
+
+
+pre_appends(10)
+
+# if you put in a variable it will paste a phrase before the variable
+  
+
+```
+
+
+```{r}
+
+f3 <- function(x) {
+  if (sum(x) < 10) return(sum(x))
+} 
+
+
+f3(4)
+
+# if you put in a variable less than 10 it will return the same variable
+  
+
+```
+
+```{r}
+
+f4 <- function(x){
+  if (sum(x) > 10) return(sum(x / 10))
+}
+
+f4(40)
+
+# if you put in a variable more than 10 it will return the variable divided by 10
+
+
+```
+
+# functions that didn't work
+
+```{r}
+
+f5 <- function(x) {
+  if (sum(x) < 10) return(sum(x))
+} else {
+  if (sum(x) > 10) return(sum(x / 10))
+}
+
+
+```
+
+# this is as far as i got 
+
+
+# 6
+
+1.5
+Write a function which checks if two vectors have the same elements.
+
+If they have the same elements in the same order, return “Exactly the same”
+
+If they have the same elements but in a different order, return “The same”
+
+If they don’t have the same elements, return “Different”.
+
+```{r}
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

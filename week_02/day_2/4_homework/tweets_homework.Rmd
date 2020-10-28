@@ -81,11 +81,7 @@ Find the mean number of characters that a CodeClan tweet contains.
 ```{r}
 
 codeclan_mean <- codeclan_tweets %>%
-  mutate(length_of_tweet = length(text)) %>%
-  summarise(mean_of_tweets = mean(length_of_tweets)) %>%
-  group_by(text)
-
-?count
+  summarise(mean_of_tweets = mean(display_text_width))
   
 ```
 
