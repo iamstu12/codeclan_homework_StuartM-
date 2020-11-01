@@ -177,6 +177,22 @@ If they don’t have the same elements, return “Different”.
 
 
 
+```{r}
+
+people = list(
+  list(name = "Alice", age = 12),
+  list(name = "Bob", age = 24),
+  list(name = "Carmen", age = 80)
+) 
+
+for (person in people){
+  print(person$name)
+}
+
+```
+
+
+
 
 
 

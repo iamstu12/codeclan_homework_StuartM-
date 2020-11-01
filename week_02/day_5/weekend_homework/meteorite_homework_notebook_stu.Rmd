@@ -1,0 +1,122 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Load Libraries
+
+```{r}
+
+library(tidyverse)
+
+
+```
+
+
+# 1.2 The .Rmd file
+
+# Question 1
+
+Read the cleaned data into R.
+
+```{r}
+
+meteorite_cleaned_data <- meteorite_arranged_by_year
+
+head(meteorite_cleaned_data)
+
+```
+
+# Question 2
+
+Find the names and years found for the 10 largest meteorites in the data.
+
+```{r}
+
+meteorite_10_largest <- meteorite_arranged_by_year %>%
+  select(year, name, mass_g) %>%
+  arrange(desc(mass_g)) %>%
+  slice(1:10) %>%
+  mutate(mass_tonne = (mass_g / 1000000))
+
+meteorite_10_largest
+
+```
+
+# Question 3
+
+Find the average mass of meteorites that were recorded falling, vs. those which were just found.
+
+```{r}
+
+meteorite_avg_mass <- meteorite_cleaned_data %>%
+  group_by(fall) %>%
+  summarise(average_mass_g = mean(mass_g)) %>%
+  mutate(average_mass_kg = (average_mass_g / 1000))
+  
+```
+
+
+# Question 4
+
+Find the number of meteorites in each year, for every year since 2000.
+
+```{r}
+
+meteorite_since_2000 <- meteorite_cleaned_data %>%
+  filter(year >= 2000) %>%
+  group_by(year) %>%
+  summarise(number_of_meteorites = sum(year)/year) %>%
+  distinct(year, number_of_meteorites)
+  
+```
+
+# Extension Work
+
+Top Meteorite Sites
+
+
+```{r}
+
+
+meteorite_top_sites <- meteorite_cleaned_data %>%
+  mutate(name = str_remove(
+    name, pattern = "[0-9]+")) %>%
+  count(name, sort = TRUE, name = "number_of_discoveries") %>%
+  slice(1:10)
+
+
+```
+
+
+Fell Compared to Found
+
+```{r}
+
+meteorite_fell_and_found <- meteorite_cleaned_data %>%
+  group_by(fall) %>%
+  count(fall, sort = TRUE, name = "number_of_discoveries") 
+
+```
+
+
+Top Ten Years
+
+```{r}
+
+meteorite_top_10_years <- meteorite_cleaned_data %>%
+  group_by(year) %>%
+  count(year, sort = TRUE, name = "number_of_discoveries") %>%
+  slice(1:10)
+
+
+```
+
+
+
+
+
+
+
+
+
