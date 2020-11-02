@@ -105,10 +105,8 @@ Top Ten Years
 ```{r}
 
 meteorite_top_10_years <- meteorite_cleaned_data %>%
-  group_by(year) %>%
   count(year, sort = TRUE, name = "number_of_discoveries") %>%
   slice(1:10)
-
 
 ```
 
