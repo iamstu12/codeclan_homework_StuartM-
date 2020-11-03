@@ -1,0 +1,161 @@
+---
+title: "SQL Day 2 Lab and Homework"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
+    css: ../../../styles.css
+  pdf_document: default
+---
+
+```{r, eval=TRUE, include=FALSE, message=FALSE, warning=FALSE}
+library(RPostgres)
+
+db = dbConnect(
+  Postgres(), 
+  user = 'omni_user',
+  password = 'in2z00yfv3as3hgo',
+  dbname = 'omni_pool',
+  host = 'db-postgresql-lon1-94437-do-user-4831272-0.a.db.ondigitalocean.com',
+  port = 25061,
+  sslmode = 'allow',
+  bigint = "numeric"
+)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center')
+```
+
+**Duration - 120 minutes**  
+
+In these practice questions you'll return again to the `omni_pool` database, so re-establish your connection in `DBeaver` if it has lapsed. 
+
+<br>
+<div class='emphasis'>
+**Submission**
+
+When answering these questions, please save your `SQL` script in `DBeaver`, copy it over to your homework repo and then add, commit and push that for submission tonight. Please add section and question numbers as `SQL` comments, like so:
+
+```{sql, eval=FALSE}
+--MVP
+--Q1
+```
+</div>
+<br>
+
+# MVP Questions
+
+1. Get a table of all `employees` details, together with their `local_account_no` and `local_sort_code`, if they have them.
+
+<details>
+<summary>**Hints**</summary>  
+
+* `local_account_no` and `local_sort_code` are fields in `pay_details`, and employee details are held in `employees`, so this query requires a `JOIN`.
+* What sort of `JOIN` is needed if we want details of **all** employees, even if they don't have stored `local_account_no` and `local_sort_code`?
+
+</details>
+<br>
+
+2. Amend your query from question 1 above to also return the `name` of the team that each employee belongs to.
+
+3. Find the first name, last name and team name of employees who are members of `teams` for which the charge cost is greater than 80. Order the employees alphabetically by last name.  
+
+<details>
+<summary>**Hints**</summary>  
+
+* `charge_cost` may be the wrong type to compare with value `80`. Can you find a way to convert it **without changing** the database? 
+* This query will require a `JOIN`, with a `WHERE` clause on a field in `teams`.
+
+</details>
+<br>
+
+4. Breakdown the number of employees in each of the `teams`, including any `teams` without members. Order the table by increasing size of team.  
+
+<details>
+<summary>**Hints**</summary>   
+
+* Two tables involved here, so a `JOIN` is necessary.
+* We want to include **all teams** (not just those with member employees), so an `INNER JOIN` won't work...
+* We need to `GROUP BY` team name and count the number of employees in each team.
+
+</details>
+<br>
+
+5. The `effective_salary` of an employee is defined as their `fte_hours` multiplied by their `salary`. Get a table for each employee showing their `id`, `first_name`, `last_name`, `fte_hours`, `salary` and `effective_salary`, along with a running total of `effective_salary` with employees placed in ascending order of `effective_salary`.  
+
+<details>
+<summary>**Hint**</summary> 
+A window function is probably the easiest way to do this.
+</details>
+<br>
+
+6. The `total_day_charge` of a team is defined as the `charge_cost` of the team multiplied by the number of `employees` in the team. Calculate the `total_day_charge` for each team.
+
+<details>
+<summary>**Hints**</summary> 
+
+* If you `GROUP BY teams.id`, because it's the primary key, you can `SELECT` any other column of `teams` that you want (this is an exception to the rule that normally you can only `SELECT` a column that you `GROUP BY`).
+* You can also tackle this efficiently using a CTE.
+
+</details>
+<br>
+
+7. How would you amend your query from question 6 above to show only those `teams` with a `total_day_charge` greater than 5000?
+
+# Extension Questions
+
+1. How many of the employees serve on one or more committees?  
+
+<details>
+<summary>**Hints**</summary> 
+
+* All of the details of membership of committees is held in a single table: `employees_committees`, so this doesn't require a join.
+* Some employees may serve in multiple committees. Can you find the number of distinct employees who serve? [**Extra hint** - do some research on the `DISTINCT()` function].
+
+</details>
+<br>
+
+2. How many of the employees do not serve on a committee?  
+
+<details>
+<summary>**Hints**</summary>   
+
+* This requires joining over only two tables
+* Could you use a join and find rows without a match in the join?
+* [**Tough!**] Can you modify your query from the previous question to do this? [**Extra hint** - perhaps try two subqueries, or perhaps two CTEs with a `CROSS JOIN` to combine them]
+
+</details>
+<br>
+
+<br>
+<p style="margin-left: 60px; margin-right: 60px">
+**The following problems require joining over three tables: `employees`, `committees` and the join table `employees_committees`. Again, don't worry, take it slow and think of the join of the first two tables producing a table that we *then* join to the third table.**
+</p>
+<br>
+
+3. Get the full employee details (including committee name) of any committee members based in China.  
+
+<details>
+<summary>**Hints**</summary>
+
+* We need both joins for the many-to-many relationship with a join table.
+* We need to filter based upon the country of employees 
+
+</details>
+<br>
+
+4. **[Tough!]** Group committee members into the `teams` in which they work, counting the number of committee members in each team (including teams with no committee members). Order the list by the number of committee members, highest first.  
+
+<details>
+<summary>**Hints**</summary>
+
+* Again, you probably want to count `DISTINCT()` employees.
+* This requires **three** joins: two joins for the many-to-many relationship as usual, followed by a third join to `teams`!
+* 'including teams with no committee members' - what type of join should we create to `teams`?
+
+</details>
+<br>
+
