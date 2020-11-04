@@ -43,7 +43,7 @@ ON employees.team_id = teams.id;
 SELECT 
 	employees.first_name,
 	employees.last_name,
-	teams."name" AS team_name -- changed 'name' to 'team name'
+	teams."name" AS team_name 
 FROM employees 
 INNER JOIN teams 
 ON employees.team_id = teams.id 
