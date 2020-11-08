@@ -164,7 +164,7 @@ WHERE pay_details.local_tax_code IS NULL;
 	(48 * 35 * CAST(teams.charge_cost AS INT) - employees.salary) * employees.fte_hours AS expected_profit
 FROM employees
 LEFT JOIN teams 
-ON employees.team_id = teams.id
+ON employees.team_id = teams.id;
 
 
 -- Question 12
@@ -193,6 +193,8 @@ LEFT JOIN (SELECT department,
 	ORDER BY COUNT(employees.id) DESC NULLS LAST 
 	LIMIT 1)  AS top
 ON employees.department = top.department;
+
+
 
 
 -- Extension Questions
