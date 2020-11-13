@@ -1,0 +1,406 @@
+---
+title: "dplyr Practice Questions"
+author: "Stuart McColl"
+date: "13/11/2020"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Step One
+
+##### Load in the Libraries
+
+```{r, warning=FALSE, message=FALSE}
+
+library(tidyverse)
+library(janitor)
+library(here)
+library(readr)
+
+```
+
+
+## Step Two
+
+##### Load in the Data
+
+```{r, warning=FALSE, message=FALSE}
+
+salaries <- read_csv("data/salaries.csv")
+
+beer <- read_delim("data/beer.txt", delim = ";", col_names = TRUE)
+
+inmates <- read_tsv("data/inmates.tsv")
+
+```
+
+
+## Using the dplyr verbs
+
+### Question 1
+
+##### Use select to see the beginning salary variable and the current salary variable.
+
+```{r}
+
+salaries %>%
+  select(beginning_salary, current_salary)
+
+```
+
+### Question 2
+
+##### Use filter to see the employees aged over 50, who have a salary over £20,000.
+
+```{r}
+
+salaries %>%
+  filter(age > 50 &
+          current_salary > 20000)
+
+```
+
+### Question 3
+
+##### Use arrange to order by the data so that the highest salaries are first.
+
+```{r}
+
+salaries %>%
+  arrange(desc(current_salary))
+
+```
+
+### Question 4
+
+##### Use mutate to make a new variables beginning_salary_pence and current_salary_pence. These should have the corresponding salaries in pence instead of pounds.
+
+```{r}
+
+salaries %>%
+  mutate(beginning_salary_pence = current_salary * 100)
+
+```
+
+### Question 5
+
+##### Use summarise to find the maximum age and the minimum age.
+
+```{r}
+
+salaries %>%
+  slice_max(age)
+
+salaries %>%
+  slice_min(age)
+
+```
+
+### Question 6
+
+##### Find the minimum salary and the maximum salary.
+
+```{r}
+
+salaries %>%
+  slice_min(current_salary)
+
+salaries %>%
+  slice_max(current_salary)
+
+```
+
+
+### Question 7
+
+##### Find all the employees aged under 30.
+
+```{r}
+
+salaries %>%
+  filter(age < 30)
+
+```
+
+### Question 8
+
+##### Order the data in terms of increasing educational level where ties are broken using age.
+
+```{r}
+
+salaries %>%
+  arrange(educational_level)
+
+```
+
+### Question 9
+
+##### Drop all the non-numeric variables in the tibble.
+
+```{r}
+
+salaries %>%
+  select(-gender, -employment_category, -is_white)
+
+```
+
+### Question 10
+
+##### Find all employees with either less than 2 years work experience or an education level below 12.
+
+```{r}
+
+salaries %>%
+  filter(work_experience < 2 | educational_level < 12)
+
+```
+
+### Question 11
+
+##### Transform the salary variables so they measure how many 1000s of pounds each salary is.
+
+```{r}
+
+salaries %>%
+  mutate(current_salary_k = current_salary / 1000)
+
+```
+
+### Question 12
+
+##### Find all the females employees with an employment category of 'security officer'.
+
+```{r}
+
+salaries %>%
+  filter(gender == "female" & employment_category == "security officer")
+
+```
+
+### Question 13
+
+##### Find the average salary across each employment category.
+
+```{r, warning=FALSE}
+
+salaries %>%
+  group_by(employment_category) %>% 
+  summarise(average_salary = mean(current_salary))
+
+```
+
+### Question 14
+
+##### What is the average salary across each employment category for just the males?
+
+```{r}
+
+salaries %>%
+  filter(gender == "male") %>% 
+  summarise(average_male_salary = mean(current_salary))
+
+```
+
+### Question 15
+
+##### Find the number of white females, white males, non-white females and non-white males.
+
+```{r}
+
+salaries %>%
+  group_by(gender, is_white) %>%
+  summarise(count_of_employees = n())
+
+```
+
+### Question 16
+
+##### What happens when we use summary statistics like mean with mutate?
+mutate(df, mean_age = mean(current_salary))
+You may need to use View to see the whole data.
+Now use group_by with mutate and mean. What do you see?
+
+```{r}
+
+salaries %>%
+  mutate(mean_salary = mean(current_salary))
+
+```
+
+
+```{r}
+
+salaries %>%
+  group_by(age) %>% 
+  mutate(mean_salary = mean(current_salary))
+
+```
+
+##### As you will see from the first set of results above, there is an extra column added for the average salary within the company. The second set of results show the average salary in a new column for each age group.
+
+## Pipes
+
+### Question 1
+
+##### Find the average salary per educational level, for educational levels of 16 and below. Arrange the results from highest salary to lowest. Answer using pipes.
+
+```{r, warning=FALSE}
+
+salaries %>%
+  filter(educational_level <= 16) %>%
+  group_by(educational_level) %>%
+  summarise(average_salary = mean(current_salary)) %>%
+  arrange(desc(average_salary))
+
+```
+
+
+### Question 2
+
+##### Find the average salary for each gender in each employment category. Exclude any employees with less than 2 years of work experience. Answer using pipes.
+
+
+```{r, warning=FALSE}
+
+salaries %>%
+  filter(work_experience >= 2) %>%
+  group_by(employment_category, gender) %>%
+  summarise(average_salary = mean(current_salary))
+
+```
+
+### Question 3
+
+##### For each employment category find the difference between the mean salary and the median salary. Arrange so that the greatest difference comes first. Answer using pipes. (The difference between mean salary and median salary gives us a measure of how skewed salaries are - see unit 1.)
+
+```{r, warning=FALSE}
+
+salaries %>%
+  group_by(employment_category) %>%
+  summarise(mean_salary = mean(current_salary),
+            median_salary = median(current_salary)) %>%
+  mutate(difference = mean_salary - median_salary) %>%
+  arrange(desc(difference))
+
+```
+
+
+## Missing values exercise
+
+### Question 1
+
+##### Find all the observations where the carbohydrates are missing.
+
+```{r}
+
+beer %>%
+  summarise(missing_carb_values = sum(is.na(carbohydrates)))
+
+```
+
+### Question 2
+
+##### Find all the observations where the brand is missing.
+
+```{r}
+
+  beer %>%
+  filter(is.na(brand))
+
+```
+
+### Question 3
+
+#####	What is different about the observations missing carbohydrates and the observations missing brand? To clean the data should be drop the rows missing brand or the rows missing carbohydrates?
+
+##### **I would suggest dropping the rows where the brand is missing, as you should be able to find out the carbohydrate information from the brand itself.**
+
+
+## Recoding excercise 
+
+### Question 1
+
+##### Change the 'M'/'F' values in gender to be 'Male'/'Female'.
+
+```{r}
+
+inmates %>%
+  mutate(gender = recode(
+    gender, "Male" = "M",
+                         "Female" = "F"))
+
+```
+
+### Question 2
+
+##### For the race variable, everything is in capital letters, change each level to title case. Also combine 'AMER IND' and 'ASIAN' into an 'Other' category.
+
+```{r}
+
+inmates %>%
+  mutate(race = str_to_title(race)) %>%
+  mutate(race = recode(race, "Amer Ind" = "Other", "Asian" = "Other"))
+
+```
+
+### Question 3a
+
+##### Make a new variable bond_level which is High whenever the bond for an inmate is above $1,000,000 and Normal otherwise.
+
+```{r}
+
+inmates %>%
+  mutate(bond_level = if_else(
+    bond_amount > 1000000, "High", "Normal"
+  ))
+
+```
+
+### Question 3b 
+
+##### How many inmates have a high bond level?
+
+```{r}
+
+inmates %>%
+  mutate(bond_level = if_else(
+    bond_amount > 1000000, "High", "Normal"
+  )) %>%
+  filter(bond_level == "High") %>%
+  summarise(high_bond_count = n())
+
+```
+
+### Question 4
+
+##### Modify the detainer variable so that NONE, IMIGRATION and FEDERAL are in title case and all other levels are set to Other.
+
+```{r}
+
+inmates %>%
+  mutate(detainer = str_to_title(detainer)) %>%
+  mutate(detainer = case_when(
+    detainer == "None" ~ "None",
+    detainer == "Imigration" ~ "Imigration",
+    detainer == "Federal" ~ "Federal",
+    TRUE ~ "Other"
+  ))
+
+```
+
+
+
+
+
+
+
+
+
+
