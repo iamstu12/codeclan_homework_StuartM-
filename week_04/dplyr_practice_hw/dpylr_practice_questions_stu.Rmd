@@ -96,10 +96,8 @@ salaries %>%
 ```{r}
 
 salaries %>%
-  slice_max(age)
-
-salaries %>%
-  slice_min(age)
+  summarise(minimum_age = min(age), 
+            maximum_age = max(age))
 
 ```
 
@@ -110,10 +108,8 @@ salaries %>%
 ```{r}
 
 salaries %>%
-  slice_min(current_salary)
-
-salaries %>%
-  slice_max(current_salary)
+  summarise(minimum_salary = min(current_salary), 
+            maximum_salary = max(current_salary))
 
 ```
 
@@ -147,7 +143,7 @@ salaries %>%
 ```{r}
 
 salaries %>%
-  select(-gender, -employment_category, -is_white)
+  select_if(negate(is.numeric))
 
 ```
 
@@ -204,7 +200,8 @@ salaries %>%
 
 salaries %>%
   filter(gender == "male") %>% 
-  summarise(average_male_salary = mean(current_salary))
+  group_by(employment_category) %>% 
+  summarise(average_salary_male = mean(current_salary))
 
 ```
 
@@ -215,8 +212,9 @@ salaries %>%
 ```{r}
 
 salaries %>%
-  group_by(gender, is_white) %>%
-  summarise(count_of_employees = n())
+  group_by(is_white, gender) %>%
+  summarise(count_of_employees = n()) %>%
+  arrange(desc(is_white))
 
 ```
 
@@ -301,7 +299,7 @@ salaries %>%
 ```{r}
 
 beer %>%
-  summarise(missing_carb_values = sum(is.na(carbohydrates)))
+  filter(is.na(carbohydrates))
 
 ```
 
@@ -334,7 +332,7 @@ beer %>%
 inmates %>%
   mutate(gender = recode(
     gender, "Male" = "M",
-                         "Female" = "F"))
+            "Female" = "F"))
 
 ```
 
@@ -346,7 +344,8 @@ inmates %>%
 
 inmates %>%
   mutate(race = str_to_title(race)) %>%
-  mutate(race = recode(race, "Amer Ind" = "Other", "Asian" = "Other"))
+  mutate(race = recode(race, "Amer Ind" = "Other", 
+                            "Asian" = "Other"))
 
 ```
 
@@ -395,6 +394,8 @@ inmates %>%
 
 ```
 
+
+## End 
 
 
 
