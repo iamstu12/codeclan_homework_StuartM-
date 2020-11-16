@@ -53,13 +53,12 @@ From the graph above, you will see that there is a higher count of backpacks tha
 
 Are there differences in backpack weight between sex?
 
-ggplot(students) +
-  geom_bar(aes(x = superpower, fill = school_year), position = "dodge")
+
 
 ```{r}
 
 ggplot(backpack) +
-  geom_bar(aes(x = backpack_weight, fill = sex), position = "dodge")
+  geom_bar(aes(x = backpack_weight, fill = sex), position = "fill")
 
 ```
 
@@ -72,7 +71,7 @@ What is the relationship between body weight and backpack weight?
 ```{r}
 
 ggplot(backpack) +
-  geom_bar(aes(x = body_weight, y = backpack_weight), fill = "light blue", stat = "identity")
+  geom_bar(aes(x = body_weight, y = backpack_weight), fill = "light blue", stat = "identity", position = "dodge")
   
 
 ```
@@ -80,8 +79,71 @@ ggplot(backpack) +
 As you can see from the results above, there is a trend that as the body weight goes up to around 160, the weight of the backpack increases and then drops off.
 
 
+# Question 5.
+
+Is this relationship different between men and women? Choose an appropriate plot and interpret your findings.
+
+```{r}
+
+ggplot(backpack) +
+  geom_bar(aes(x = body_weight, y = backpack_weight, fill = sex), stat = "identity", position = "dodge")
+
+```
+
+From the results above you can see that as you get to the female weight of around 175 it drops off, whereas the males are almost 200 by the time the backpack weight drops, and is 10 heavier.
+
+# Question 6.
+
+What proportion of students report back pain?
 
 
+```{r}
+
+back_problems <- backpack %>%
+  mutate(back_problems = if_else(back_problems == "1", "Yes", "No")) %>% 
+  group_by(back_problems) %>% 
+  summarise(back_problems_count = n())
+
+ggplot(back_problems) +
+  geom_bar(aes(x = back_problems, y = back_problems_count, fill = back_problems), stat = "identity")
+  
+
+```
+
+# Question 7.
+
+Is this proportion different between men and women?
+
+```{r}
+backpack %>%
+  filter(back_problems == 1) %>% 
+  group_by(sex, back_problems) %>%
+  summarise(back_problems = n())
+```
+
+
+```{r}
+
+backpack_back_problems <- backpack %>%
+  filter(back_problems == 1) %>% 
+  group_by(sex) %>%
+  summarise(back_problems = n())
+
+ggplot(backpack_back_problems) +
+  geom_bar(aes(x = sex, y = back_problems, fill = sex), stat = "identity")
+
+
+```
+
+# Question 8.
+
+Now you’ve investigated your data separately, create plots to describe the relationship between backpack weight, body weight, gender and reported backpain.
+
+Try both backpack_weight and body_weight as well as the ratio.
+
+
+
+ 
 
 
 
