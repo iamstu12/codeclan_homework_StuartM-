@@ -142,6 +142,31 @@ Now you’ve investigated your data separately, create plots to describe the rel
 Try both backpack_weight and body_weight as well as the ratio.
 
 
+```{r}
+
+ggplot(backpack) +
+  geom_bar(aes(x = body_weight, y = backpack_weight, fill = sex), stat = "identity") +
+  facet_wrap(~ sex)
+
+```
+
+From the graph, you can see that as the body weight in females reaches 150 and 170 for males, the backpack weight count reaches it's maximum.
+
+
+```{r}
+
+backpack_updated <- backpack %>%
+  mutate(back_problems = if_else(back_problems == "1", "Yes", "No"))
+
+ggplot(backpack_updated) +
+  geom_bar(aes(x = body_weight, y = backpack_weight, fill = sex), stat = "identity") +
+  facet_wrap(~ back_problems)
+
+```
+
+The graph above shows there are more males who do not experience back pain.
+
+# End
 
  
 
