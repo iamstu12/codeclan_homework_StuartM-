@@ -35,7 +35,49 @@ glimpse(backpack)
 
 ```
 
+# Question 2.
 
+What is the distribution of backpack weights that students are carrying? Choose an appropriate graph to show the distribution.
+
+
+```{r}
+
+ggplot(backpack) +
+  geom_bar(aes(x = backpack_weight), fill = "light blue")
+
+```
+
+From the graph above, you will see that there is a higher count of backpacks that are 10 and below. As the bag gets heavier, there is a smaller count.
+
+# Question 3.
+
+Are there differences in backpack weight between sex?
+
+ggplot(students) +
+  geom_bar(aes(x = superpower, fill = school_year), position = "dodge")
+
+```{r}
+
+ggplot(backpack) +
+  geom_bar(aes(x = backpack_weight, fill = sex), position = "dodge")
+
+```
+
+From the results above, you will see that there is a higher count of backpacks for females. You can also see that there are specific weights that only the males are carrying - just over 10 is most popular and they do carry heavier bags compared to females.
+
+# Question 4.
+
+What is the relationship between body weight and backpack weight?
+
+```{r}
+
+ggplot(backpack) +
+  geom_bar(aes(x = body_weight, y = backpack_weight), fill = "light blue", stat = "identity")
+  
+
+```
+
+As you can see from the results above, there is a trend that as the body weight goes up to around 160, the weight of the backpack increases and then drops off.
 
 
 
