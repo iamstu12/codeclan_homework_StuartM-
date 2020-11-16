@@ -1,0 +1,50 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Introduction to ggplot2 homework
+
+# Question 1.
+
+Load in the libraries you need, and look at the backpack data. Take note of variable names and dimensions.
+
+```{r}
+
+library(tidyverse)
+library(CodeClanData)
+
+```
+
+```{r}
+
+backpack <- backpack
+
+```
+
+```{r}
+
+names(backpack)
+
+```
+
+
+```{r}
+
+glimpse(backpack)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

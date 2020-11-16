@@ -85,7 +85,8 @@ salaries %>%
 ```{r}
 
 salaries %>%
-  mutate(beginning_salary_pence = current_salary * 100)
+  mutate(beginning_salary_pence = beginning_salary * 100,
+         current_salary_pence = current_salary * 100)
 
 ```
 
@@ -132,7 +133,7 @@ salaries %>%
 ```{r}
 
 salaries %>%
-  arrange(educational_level)
+  arrange(educational_level, age)
 
 ```
 
@@ -165,7 +166,8 @@ salaries %>%
 ```{r}
 
 salaries %>%
-  mutate(current_salary_k = current_salary / 1000)
+  mutate(current_salary_k = current_salary / 1000,
+         beginning_salary_k = beginning_salary / 1000)
 
 ```
 
