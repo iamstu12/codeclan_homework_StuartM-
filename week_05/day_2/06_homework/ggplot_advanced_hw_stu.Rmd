@@ -60,11 +60,11 @@ Take the data in the dataset qb_revenue_breakdown and make a stacked bar chart s
 qb_revenue_breakdown
 
 ggplot(qb_revenue_breakdown) +
-  aes(x = Year, y = Revenue, fill = "#50434F") +
-  scale_fill_manual(values = "#50434F", guide = "none") +
+  aes(x = Year, y = Revenue, fill = Product) +
+  scale_fill_manual(values = col_scheme) +
   geom_col() +
   theme_light() +
-  labs(title = "QikBit Revenue") 
+  labs(title = "QwikBit Revenue") 
 
 ?geom_bar
 
@@ -75,21 +75,19 @@ ggplot(qb_revenue_breakdown) +
 Make a line chart showing monthly sales of the “flagship product” - the KwikBit Unit1 - over the last year. This data is inside qb_monthly_sales, but you will need to use subset.
 
 
+
+
 ```{r}
 
-qb_monthly_sales
+kwikbit_sales <- subset(qb_monthly_sales, Cashflow == "Kwikbit Unit 1 Sales")
 
-ggplot(qb_monthly_sales) +
-  aes(x = Date, y = Amount, filter = Cashflow == "Kwikbit Unit 1 Sales", colour = Cashflow) +
-  geom_line() +
-  scale_colour_manual(
-    values = c(
-      "Cost" = "#E89FE9",
-      "Kwikbit Unit 1 Sales" = "#50434F",
-      "Total Revenue" = "#B6A7B5")) +
-  theme_light()
-
-?geom_line
+ggplot(kwikbit_sales) +
+  aes(x = Date, y = Amount) +
+  geom_line(size = 2, colour = col_scheme[3]) +
+  theme_light() +
+  labs(title = "Qwikbit Sales") +
+  scale_colour_manual(values = col_scheme)
+  
 
 ```
 
@@ -99,15 +97,15 @@ Make a line chart showing monthly revenue and costs over the last year. This dat
 
 ```{r}
 
-ggplot(qb_monthly_sales) +
-  aes(x = Date, y = Amount, filter = Cashflow == "Kwikbit Unit 1 Sales", colour = Cashflow) +
-  geom_line() +
-  scale_colour_manual(
-    values = c(
-      "Cost" = "#E89FE9",
-      "Kwikbit Unit 1 Sales" = "#50434F",
-      "Total Revenue" = "#B6A7B5")) +
-  theme_light()
+revenue_and_costs <- subset(qb_monthly_sales, Cashflow != "Kwikbit Unit 1 Sales")
+
+ggplot(revenue_and_costs) +
+  aes(x = Date, y = Amount, colour = Cashflow, group = Cashflow) +
+  geom_line(size = 2) +
+  theme_light() +
+  scale_colour_manual(values = col_scheme) +
+  scale_y_continuous("Sales", labels = scales::dollar_format(prefix = "£")) +
+  ggtitle("QikBit - Revenue and Costs", subtitle = "1 Aug 2018 to 1 July 2019")
 
 ```
 
@@ -137,6 +135,25 @@ ggplot(qb_competitors) +
 
 
 ```
+
+# Alternative Answer for Q4
+
+```{r}
+
+ggplot(qb_competitors) +
+  aes(x = Year, y = Revenue, fill = Company) +
+  geom_col(position = "dodge") +
+  theme_light() +
+  scale_fill_manual(
+    values = c(
+      "Competitor 1" = "#E89FE9",
+      "Competitor 2" = "#50434F",
+      "Competitor 3" = "#F9A472",
+      "Competitor 4" = "#BD7040")) +
+  labs(title = "Personal Fitness Tracker Sales")
+
+```
+
 
 # Question 5 
 
@@ -168,11 +185,18 @@ Now the company wants to compare the number of steps that their device counts vs
 
 ```{r}
 
-head(qb_device_data)
+qb_device_data <- 
+mutate(qb_device_data, decimal_hour = hours + (mins/60))
 
 ggplot(qb_device_data) +
-  aes(x = device, y = counts) +
-  geom_line()
+  aes(x = decimal_hour, y = counts, colour = device) +
+  geom_line() + 
+  scale_x_continuous("Time (hours)") +
+  scale_y_continuous("Steps") +
+  facet_grid(id ~ device) +
+  scale_colour_manual(values = col_scheme) +
+  theme_light() +
+  ggtitle("Comparison between KwikBit Unit1 and Competitors for 5 individuals")
 
 ```
 
