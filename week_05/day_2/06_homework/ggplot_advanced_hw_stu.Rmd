@@ -147,7 +147,7 @@ Now show the sales from the 5 competitors as a line graph. Include an extra laye
 qb_competitors
 
 ggplot(qb_competitors) +
-  aes(x = Year, y = Revenue, fill = Company) +
+  aes(x = Year, y = Revenue, colour = Company) +
   geom_line() +
   scale_colour_manual(
     values = c(
