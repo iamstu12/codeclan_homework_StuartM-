@@ -65,7 +65,7 @@ game_sales <- game_sales %>%
 
 game_sales <- game_sales %>%
   mutate(`Overall Score` = `Critic Score` + `User Score`) %>% 
-  arrange(desc(`Overall Score`)) # sort this
+  arrange(desc(`Overall Score`))
 
 
 
@@ -90,7 +90,7 @@ ui <- fluidPage(
  
   pickerInput("console",
               (h3("Choose your Console")),
-              choices = c("Gameboy Advance", "GameCube", "DS", "Wii", "3DS", "Wii U"),
+              choices = c("Gameboy Advance", "GameCube", "DS", "Wii", "3DS", "Wii U"), # <---- order of release date 
               options = list(`actions-box` = TRUE),
               multiple = T,
               width = NULL
@@ -99,7 +99,7 @@ ui <- fluidPage(
   br(),
   
   
-  actionButton("update", (h2("Here We GO!"))),
+  actionButton("update", (h2("Here We GO!"))), # <---- mario catch phrase
   
   br(),
   br(),
@@ -159,6 +159,12 @@ server <- function(input, output) {
 
 
 shinyApp(ui = ui, server = server)
+
+
+# this particular app is aimed towards nintendo fans
+# the purpose of the app is to be able to view the top rated games
+# users can either select all consoles and view the top games OR
+# select their favourite console(s) individually
 
 
 
