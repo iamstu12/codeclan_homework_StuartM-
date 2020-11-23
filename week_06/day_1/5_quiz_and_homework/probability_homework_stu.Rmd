@@ -55,8 +55,6 @@ titanic <- titanic %>%
 
 
 
-Probability calculations:
-
 ```{r}
 
 titanic <- titanic %>%
@@ -64,7 +62,7 @@ titanic <- titanic %>%
 
 
 ```
-
+Probability calculations:
 
 ```{r}
 
@@ -183,15 +181,136 @@ Probability:
 
 # END OF MVP
 
+# ADDITIONAL TITANIC
+
+```{r}
+
+prob_survive_1st_class <- titanic %>%
+  filter(class == "1st" & survived == TRUE) %>%
+  summarise(prob = n()/ nrow(titanic))
+
+prob_survive_1st_class
+
+```
+
+```{r}
+
+prob_survive_2nd_class <- titanic %>%
+  filter(class == "2nd" & survived == TRUE) %>%
+  summarise(prob = n()/ nrow(titanic))
+
+prob_survive_2nd_class
+
+```
+
+```{r}
+
+prob_survive_3rd_class <- titanic %>%
+  filter(class == "3rd" & survived == TRUE) %>%
+  summarise(prob = n()/ nrow(titanic))
+
+prob_survive_3rd_class
+
+```
+
+```{r}
+
+prob_survive_1st_class + prob_survive_2nd_class + prob_survive_3rd_class
+
+```
+
+```{r}
+
+prob_survive_male <- titanic %>%
+  filter(gender == "male" & survived == TRUE) %>%
+  summarise(prob = n()/ nrow(titanic))
+
+prob_survive_male
 
 
+```
+
+```{r}
+
+prob_survive_female <- titanic %>%
+  filter(gender == "female" & survived == TRUE) %>%
+  summarise(prob = n()/ nrow(titanic))
+
+prob_survive_female
+
+```
 
 
+```{r}
+
+prob_survive_country <- titanic %>%
+  filter(survived == TRUE) %>%
+  group_by(country) %>% 
+  summarise(prob = n()/ nrow(titanic)) %>%
+  arrange(desc(prob)) %>%
+  drop_na(country)
+
+prob_survive_country
+
+```
 
 
+```{r}
+
+titanic %>%
+  group_by(country) %>% 
+  summarise(count = n()) %>%
+  arrange(desc(count)) %>%
+  drop_na(country)
+
+```
+
+```{r}
+
+titanic %>%
+  group_by(survived) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count))
 
 
+```
 
+
+```{r}
+
+titanic %>%
+  group_by(survived, gender) %>%
+  summarise(count = n()) 
+
+```
+
+```{r}
+
+titanic %>%
+  group_by(gender) %>% 
+  summarise(count = n())
+
+```
+
+
+```{r}
+
+titanic %>%
+  filter(crew == TRUE) %>% 
+  group_by(gender) %>% 
+  summarise(crew_count = n())
+
+```
+
+
+```{r}
+
+titanic %>%
+  filter(crew == FALSE) %>% 
+  group_by(gender) %>% 
+  summarise(passenger_count = n())
+
+```
 
 
 
