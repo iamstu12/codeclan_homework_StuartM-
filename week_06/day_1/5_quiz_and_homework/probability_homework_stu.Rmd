@@ -1,0 +1,234 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Probability Homework
+
+# Load Libraries
+
+```{r}
+
+library(prob)
+library(gtools)
+library(tidyverse)
+
+```
+
+
+# Load Data
+
+```{r}
+
+titanic <- read_csv("data/titanic.csv")
+
+titanic
+
+```
+
+# MVP PART 1 - The Titanic
+
+Data Wrangling:
+
+1. Check variable names within 'class'.
+2. Create a T or F column called 'crew'.
+3. Change 'survived' column to T or F.
+
+```{r}
+
+unique(titanic$class)
+
+```
+
+
+```{r}
+
+titanic <- titanic %>%
+  mutate(crew = recode(class, "3rd" = FALSE,
+                        "2nd"  = FALSE,
+                        "1st" = FALSE,
+                        .default = TRUE
+                        )
+         )
+
+```
+
+
+
+Probability calculations:
+
+```{r}
+
+titanic <- titanic %>%
+  mutate(survived = if_else(survived == "no", FALSE, TRUE))
+
+
+```
+
+
+```{r}
+
+prob_survive <- titanic %>%
+  filter(survived == TRUE) %>%
+  summarise(prob = n()/ nrow(titanic))
+
+prob_survive
+
+
+```
+
+```{r}
+
+prob_survive_crew <- titanic %>%
+  filter(survived == TRUE & crew == TRUE) %>%
+  summarise(prob = n() / nrow(titanic))
+
+prob_survive_crew
+
+```
+
+```{r}
+
+prob_survive_passenger <- titanic %>%
+  filter(survived == TRUE & crew == FALSE) %>%
+  summarise(prob = n() / nrow(titanic))
+
+prob_survive_passenger
+
+```
+
+# MVP PART 1 - Results
+
+The probability of surviving, whether you are crew or passenger, is 32.2%.
+
+The probability of surviving if you are crew is 9.5%.
+
+The probability of surviving if you are a passenger is 22.7%
+
+# MVP PART 2 - Probability Problems
+
+1. If I roll a six-sided dice once, what is the probability of getting a number less than 5?
+
+Number of possibilities = 6
+Number of potential outcomes = 4
+
+```{r}
+
+4 / 6
+
+```
+
+2. How many outcomes are there in the sample space of an experiment in which we toss three dice?
+
+Number of outcomes from 1 die = 6
+Number of outcomes from 3 die = 6^3 = 216
+
+
+```{r}
+
+rolldie(3)
+
+```
+
+3. In an experiment where we roll four dice:
+
+i. how many outcomes are in the event total_equals_5_6_7 (i.e. the total of the four dice equals 5, 6 or 7)?
+
+ANSWER = 9
+
+```{r}
+
+total_equals_5_6_7 <- rolldie(4) %>%
+  mutate(row_sum = rowSums(.))
+
+total_equals_5_6_7
+
+total_equals_5_6_7 %>%
+  filter(row_sum == c(5, 6, 7)) %>%
+  nrow()
+
+```
+
+
+ii. what is the probability of this event?
+
+ANSWER:
+
+Number of outcomes from 4 die = 6^4 = 1,296
+Probability of rolling a total of 5, 6 or 7 = 9
+
+
+```{r}
+
+9 / 1296 * 100
+
+```
+
+
+iii. what assumptions do we apply in answering part ii?
+
+ANSWER = No bias
+
+4. Five chairs are placed in a row in a room, along with five people of differing height. The people sit down randomly on the chairs. What is the probability that they sit in order of decreasing height, left to right?
+
+Number of possibilities for 1 person = 5
+Number of possibilities for 5 people = 5^5 = 3,125
+Probability:
+
+```{r}
+
+1 / 3125 * 100
+
+```
+
+# END OF MVP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
