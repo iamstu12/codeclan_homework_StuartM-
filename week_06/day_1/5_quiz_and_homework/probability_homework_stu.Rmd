@@ -132,7 +132,7 @@ rolldie(3)
 
 i. how many outcomes are in the event total_equals_5_6_7 (i.e. the total of the four dice equals 5, 6 or 7)?
 
-ANSWER = 9
+ANSWER = 34
 
 ```{r}
 
@@ -142,7 +142,7 @@ total_equals_5_6_7 <- rolldie(4) %>%
 total_equals_5_6_7
 
 total_equals_5_6_7 %>%
-  filter(row_sum == c(5, 6, 7)) %>%
+  filter(row_sum %in% c(5, 6, 7)) %>%
   nrow()
 
 ```
@@ -157,8 +157,7 @@ Probability of rolling a total of 5, 6 or 7 = 9
 
 
 ```{r}
-
-9 / 1296 * 100
+34 / 1296
 
 ```
 
@@ -169,13 +168,19 @@ ANSWER = No bias
 
 4. Five chairs are placed in a row in a room, along with five people of differing height. The people sit down randomly on the chairs. What is the probability that they sit in order of decreasing height, left to right?
 
+
+```{r}
+factorial(5)
+```
+
+
 Number of possibilities for 1 person = 5
-Number of possibilities for 5 people = 5^5 = 3,125
+Number of possibilities for 5 people = 120
 Probability:
 
 ```{r}
 
-1 / 3125 * 100
+1 / 120
 
 ```
 

@@ -1,0 +1,155 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Load in Libraries
+
+```{r}
+
+library(janitor)
+library(skimr)
+library(e1071)
+library(prob)
+library(lubridate)
+library(tidyverse)
+
+```
+
+# MVP
+
+# Part 1
+
+Load the data, clean_names() and explore it.
+
+```{r}
+
+mobile_phones <- read_csv("data/20190928-items.csv") %>% 
+  clean_names()
+
+glimpse(mobile_phones)
+
+```
+
+# Part 2
+
+Find the brand with the highest numbers of phones in the dataset.
+
+```{r}
+
+mobile_phones %>% 
+  group_by(brand) %>% 
+  summarise(num_of_phones = n()) %>% 
+  slice_max(num_of_phones)
+
+```
+
+# Part 3
+
+For your top brand, plot the distribution of phone ratings as a probability density, overlaying a fitted normal distribution. Do you think the normal distribution provides a good model of these ratings?
+
+Step 1 - Create a new table for Samsung ONLY
+
+```{r}
+
+samsung_mobile_phones <- mobile_phones %>% 
+  filter(brand == "Samsung")
+
+```
+
+Step 2 - Calculate the mean, mode, median and standard deviation for the ratings
+
+```{r}
+
+# create / steal del's mode function:
+
+get_mode <- function(data){
+  tabled_data <- table(data)
+  table_names <- names(tabled_data)
+  return( table_names[tabled_data == max(tabled_data)] )
+}
+
+
+samsung_stats <- samsung_mobile_phones %>% 
+  summarise(mean = mean(rating),
+            mode = get_mode(rating),
+            median = median(rating),
+            sd = sd(rating))
+
+samsung_stats
+
+
+```
+
+As you cn see from the calculations above, the mean, mode and median are all equal, which means there are no outliers within the results (0-5) and the sd suggests a slight left skew on the results.
+
+Step 3 - Plot the graph
+
+```{r}
+
+samsung_mobile_phones %>% 
+  ggplot(aes(x = rating)) +
+  geom_histogram(aes(y = ..density..), col = "white", bins = 20, alpha = 0.7) +
+  theme_light() +
+  stat_function(
+    fun = dnorm,
+    args = list(
+      mean = samsung_stats$mean,
+      sd = samsung_stats$sd
+    ),
+    col = "dark green"
+  )
+
+
+```
+
+The graph above confirms a slight left skew, which suggests that Samsung phones are rated highly as the most frequently occurring rating was close to 4 out of 5.
+
+# Step 4
+
+We can be more quantitative in comparing the distribution of top brand ratings with a normal distribution. You calculated the mean() and sd() of your distribution in an earlier question. Use these values to calculate the proportions of ratings within one-, two- and three standard deviations of the mean. Compare these proportions with those you expect for a normal distribution.
+
+
+```{r}
+
+samsung_mobile_phones %>%
+  filter(rating >= samsung_stats$mean - samsung_stats$sd) %>%
+  filter(rating <= samsung_stats$mean + samsung_stats$sd) %>%
+  
+  summarise(prop_within_1sd = n() / nrow(samsung_mobile_phones))
+
+```
+
+
+```{r}
+
+samsung_mobile_phones %>%
+  filter(rating >= samsung_stats$mean - (samsung_stats$sd*2)) %>%
+  filter(rating <= samsung_stats$mean + (samsung_stats$sd*2)) %>%
+  summarise(prop_within_2sd = n() / nrow(samsung_mobile_phones))
+
+```
+
+
+```{r}
+
+samsung_mobile_phones %>%
+  filter(rating >= samsung_stats$mean - (samsung_stats$sd*3)) %>%
+  filter(rating <= samsung_stats$mean + (samsung_stats$sd*3)) %>%
+  summarise(prop_within_3sd = n() / nrow(samsung_mobile_phones))
+
+```
+
+
+RESULTS:
+
+1 standard deviation from mean (68%) = 0.7934509 or 79% of ratings
+2 standard deviation from mean (95%) = 0.9193955 or 92% of ratings
+3 standard deviation from mean (99.7%) = 0.9798489 or 98% of ratings
+
+
+
+
+
+
+
