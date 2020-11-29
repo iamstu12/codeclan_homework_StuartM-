@@ -1,0 +1,350 @@
+---
+title: "Hypothesis Tests & Probability - Homework"
+author: "Stuart McColl"
+date: "27/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1 MVP
+
+## 1.1 Hypothesis Testing - Practical
+
+#### You work for an animal conservation organisation and are looking to do some investigating into some of the animals to provide evidence for some projects you are looking to run.
+
+#### In this homework we’ll use the msleep data set provided in the ggplot package. It concerns the sleeping patterns of various types of mammal.
+
+## Part 1
+
+#### Explore the dataset and familiarise yourself with it.
+
+```{r, warning = FALSE, message = FALSE}
+
+library(tidyverse)
+library(infer)
+
+msleep <- msleep
+
+```
+
+```{r}
+
+head(msleep)
+
+```
+
+## Part 2
+
+#### Jabberwockies sleep for around 7 hours a night, on average. Perform an appropriate statistical test to determine whether the mean sleep_total in the sampled population of animal types differs from the typical value for jabberwockies.
+
+#### Null Hypothesis = H0: animals_mean_sleep = 7
+#### Alternative Hypothesis = Ha: animals_mean_sleep != 7
+#### Alpha = 5%
+
+#### Visualise the Data:
+
+```{r, warning=FALSE}
+
+msleep %>%
+  ggplot(aes(x = sleep_total)) +
+  geom_histogram(col = "white")
+
+```
+
+#### Calculate the Mean 'sleep_total':
+
+```{r}
+
+mean_sleep_all_animals <-msleep %>% 
+  summarise(mean_sleep = mean(sleep_total))
+
+mean_sleep_all_animals
+
+```
+
+#### Calculate the Null Distribution:
+
+```{r}
+
+null_distribution_all_animals <- msleep %>% 
+  specify(response = sleep_total) %>% 
+  hypothesise(null = "point", mu = 7) %>% 
+  generate(reps = 10000, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+
+null_distribution_all_animals
+
+beepr::beep(5)
+
+```
+
+#### Visualise Observed Statistic
+
+```{r}
+
+null_distribution_all_animals %>%
+  visualise(bins = 30) +
+  shade_p_value(obs_stat = mean_sleep_all_animals$mean_sleep, direction = "both")
+
+
+```
+
+
+#### Calculate p Value:
+
+```{r}
+
+null_distribution_all_animals %>%
+  get_p_value(obs_stat = mean_sleep_all_animals$mean_sleep, direction = "both")
+
+```
+
+#### Conclusion - The p-value is less than the alpha, which means there is enough evidence in the sample to suggest that the jabberwockies mean sleep of 7 hours, is statistically significantly different from all other animals mean sleep. The null hypothesis has been rejected.
+
+## Part 3
+
+#### Perform an appropriate statistical test to determine whether omnivores sleep for significantly longer than herbivores, on average.
+
+#### Null Hypothesis = H0: mean_omni_sleep - mean_herbi_sleep = 0
+#### Alternative Hypothesis = Ha: mean_omni_sleep - mean_herbi_sleep > 0
+#### Alpha = 5%
+
+#### Calculate the mean sleep for each:
+
+```{r}
+
+mean_sleep_herbivore <- msleep %>% 
+  group_by(vore) %>% 
+  filter(vore == "herbi") %>% 
+  summarise(mean_sleep = mean(sleep_total)) 
+
+mean_sleep_herbivore
+
+mean_sleep_omnivore <- msleep %>% 
+  group_by(vore) %>% 
+  filter(vore == "omni") %>% 
+  summarise(mean_sleep = mean(sleep_total)) 
+
+mean_sleep_omnivore
+
+```
+
+
+#### Visualise
+
+```{r}
+
+msleep_herbivore_omnivore <- msleep %>% 
+  filter(vore == "herbi" | vore == "omni")
+
+
+msleep_herbivore_omnivore  %>%
+  ggplot(aes(x = sleep_total)) +
+  geom_histogram(col = "white")
+
+
+```
+
+#### Null Distribution:
+
+```{r}
+
+null_distribution_herbivore_omnivore  <- msleep_herbivore_omnivore  %>% 
+  specify(sleep_total ~ vore) %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 10000, type = "permute") %>% 
+  calculate(stat = "diff in means", order = c("omni", "herbi"))
+
+null_distribution_herbivore_omnivore
+
+beepr::beep(5)
+
+
+```
+
+```{r}
+
+null_distribution_herbivore_omnivore  %>%
+  visualise(bins = 30) +
+  shade_p_value(obs_stat = mean_sleep_omnivore$mean_sleep, direction = "greater")
+
+```
+
+#### Get the p value:
+
+```{r}
+
+null_distribution_herbivore_omnivore %>%
+  get_p_value(obs_stat = mean_sleep_omnivore$mean_sleep, direction = "greater")
+
+```
+
+#### Results - The p-value is less than the alpha, therefore there is suffcient evidence in the sample to suggest that the sample mean is statistically significantly different and has successfully rejected the null hypothesis. This means that there is a statistically significant difference in the mean sleep of the omnivore compared to the herbivore.
+
+
+## Part 4 
+
+#### Perform an appropriate statistical test to determine whether the proportion of domesticated animal types in the population of animal types is greater than 5%.
+
+#### Hypothesise:
+
+#### Null Hypothesis = H0: prop_dom_animals = 5%
+#### Alternative Hypothesis: Ha: prop_dom_animals != 5%
+#### alpha = 1% 
+
+
+##### Proportion:
+
+```{r}
+
+msleep_prop_dom <- msleep %>% 
+  mutate(domesticated_flag = ifelse(conservation == "domesticated", TRUE, FALSE)) 
+
+msleep_prop_dom
+
+msleep_prop_dom %>% 
+  filter(conservation == "domesticated") %>% 
+  summarise(n = n() / nrow(msleep))
+
+
+```
+
+
+#### Null distribution:
+
+
+```{r}
+
+null_distribution_dom <- msleep_prop_dom %>% 
+  specify(response = domesticated_flag, success = "TRUE") %>% 
+  hypothesise(null = "point", p = 0.05) %>% 
+  generate(reps = 10000, type = "simulate") %>% 
+  calculate(stat = "prop")
+
+null_distribution_dom
+
+beepr::beep(5)
+
+
+
+```
+
+#### Visualise:
+
+```{r}
+
+null_distribution_dom %>%
+  visualise(bins = 10)
+
+```
+
+
+#### Stat:
+
+```{r}
+
+dom_stat <- msleep_prop_dom %>% 
+  specify(response = domesticated_flag, success = "TRUE") %>%
+  calculate(stat = "prop")
+
+dom_stat
+
+
+```
+
+#### Plot:
+
+```{r}
+
+null_distribution_dom %>% 
+  visualise(bins = 10) +
+  shade_p_value(obs_stat = dom_stat, direction = "greater")
+
+
+```
+
+#### Get p value
+
+```{r}
+
+null_distribution_dom %>% 
+  get_p_value(obs_stat = dom_stat, direction = "greater")
+
+```
+
+#### p = 0.00003
+
+#### Results - The p-value is less than the alpha, therefore there is suffcient evidence in the sample to suggest that the sample proportion is statistically significantly different and has successfully rejected the null hypothesis. This means that the proportion of domesticated animals is not 5% and is statistically significantly different.
+
+
+# 1.2 Hypothesis Testing - Interpretation
+
+## Part 1
+
+#### You work for a independent coffee shop. You’ve performed a small survey in the local town and found that 40% of the people you randomly asked were aware of your shop in the town. You then conduct a marketing campaign by flyering local venues and targeting advertisements on social media. Finally you conduct a second small random survey in the town, asking if people are aware of your coffee shop. You want to test the hypothesis that the campaign has significantly increased awareness of the shop.
+
+* Test: Comparing a proportion from one sample against a specified value.
+* Null Hypothesis: H0: prop0 = 40%.
+* Statistic: Sample proportion.
+* Null Distribution: Simulation
+
+## Part 2
+
+#### You work for a website design company and have performed an A/B test on the position of a banner on a website page promoting a particular item. 
+
+#### In the current test, the first group continues to be shown the banner at the right hand side of the webpage (its usual position) while the test group is shown it at the top of the page. The performance metric we will be testing is click through rate (CTR) on the banner, i.e. what proportion of users click on the banner
+
+* Test: Comparing the proportions from two independent samples (testing independence).
+* Null Hypothesis: H0: prop1 - prop2 = 0
+* Statistic: Difference in proportions. 
+* Null Distribution: Permutation
+
+## Part 3
+
+#### You work as an analyst for a car manufacturing company - they have specific standards they must meet for standards and regulation purposes. You have been asked to check the quality control of the manufacture of a particular car part. The part must have a width of 145mm, with a small (given) level of tolerance. You have been given data on a sample of 1,000 parts produced over the period of a week.
+
+* Test: Comparing the mean from one sample (1,000 parts) against a specified value (145mm).
+* Null Hypothesis: H0: mu0 = 145mm.
+* Statistic: Sample mean.
+* Null Distribution: Bootstrap (sample with replacement) from our original 1,000 part sample, calculate the mean for the bootstrap sample, repeat this process many times (e.g. 10,000) to create the null distribution. Then shift the center of this distribution to alpha.
+
+# 1.2.2 Interpreting the Results
+
+## Part 1
+
+#### Coffee shop problem. Significance level: 0.05, calculated p-value: 0.07
+
+#### The p-value is greater than than the alpha, which means there is not enough evidence that the proportion is statistically significantly different from the original survey. This means that the advertisement campaign did not generate a statistically significant difference and has failed to reject the null hypothesis.
+
+## Part 2
+
+#### Website company problem. Significance level: 0.01, p-value: 0.006
+
+#### The p-value is less than the alpha, therefore there is suffcient evidence in the sample to suggest that the sample mean is statistically significantly difference in changing the position of the banner and has successfully rejected the null hypothesis.
+
+## Part 3
+
+#### Manufacturing company problem. Significance level: 0.05, p-value: 0.55
+
+#### The p-value is greater than than the alpha, which means there is not enough evidence that the proportion is statistically significantly different from the original. This means that the 1,000 parts did not generate a statistically significant difference and has failed to reject the null hypothesis.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# End

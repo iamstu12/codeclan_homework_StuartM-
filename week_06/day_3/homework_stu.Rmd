@@ -57,8 +57,6 @@ Compute and visualise a bootstrap sampling distribution for the mean(lot_area) o
 
 nrow(ames)
 
-names(ames)
-
 bootstrap_resample <- ames %>% 
   rep_sample_n(size = 2930, replace = TRUE, reps = 2930) %>% 
   summarise(
@@ -144,21 +142,6 @@ point_ests
 
 
 # End of MVP
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

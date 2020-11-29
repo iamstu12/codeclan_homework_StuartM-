@@ -10,6 +10,7 @@ library(dplyr)
 library(ggplot2)
 library(DT)
 library(shinythemes)
+library(beepr)
 
 # Load in Data ----
 
@@ -145,9 +146,14 @@ server <- function(input, output) {
   
   game_data <- eventReactive(input$update, {
     
+    observeEvent(input$update, {
+      beep(8 )
+    })
+    
     game_sales %>%
       select("Name", "Console", "Year Of Release", "Critic Score", "User Score") %>%
-      filter(Console == input$console) 
+      filter(Console == input$console)
+  
       
   })
   
