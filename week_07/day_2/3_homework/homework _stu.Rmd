@@ -124,9 +124,9 @@ nyc_bikes_filled <- nyc_bikes_by_date %>%
 
 nyc_bikes_fit_dataset <- nyc_bikes_filled %>% 
   model(
-    snaive = SNAIVE(nyc_bikes_filled),
-    mean_model = MEAN(nyc_bikes_filled),
-    arima = ARIMA(nyc_bikes_filled)
+    snaive = SNAIVE(number_of_bike_hire_by_date),
+    mean_model = MEAN(number_of_bike_hire_by_date),
+    arima = ARIMA(number_of_bike_hire_by_date)
   ) 
 
 nyc_bikes_fit_dataset
@@ -151,6 +151,10 @@ nyc_bikes_4month_forecast <- nyc_bikes_fit_dataset %>%
   fabletools::forecast(h = 120)
 
 nyc_bikes_4month_forecast
+
+nyc_bikes_4month_forecast %>%
+  autoplot(nyc_bikes_filled, level = NULL) 
+
 
 
 ```
