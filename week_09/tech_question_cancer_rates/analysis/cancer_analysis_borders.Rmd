@@ -1,0 +1,32 @@
+---
+title: "Cancer Incidences Borders"
+author: "Stuart McColl"
+date: "14/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**bold**  
+*italic*  
+<http://rmarkdown.rstudio.com>  
+[link](http://rmarkdown.rstudio.com)  
+
+* unordered list
+    + sub-item 1
+    + sub-item 2
+    
+1. ordered list
+  i) sub-item
+2. item 2
+
+*** 
+       
+Note that `echo = FALSE` prevents the R code from being printed.
+
+
+
+
+
