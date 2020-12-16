@@ -27,9 +27,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Analysis
 
-### Load in Libraries and Data
-
-```{r, warning = FALSE, message = FALSE}
+```{r, warning = FALSE, message = FALSE, echo = FALSE}
 
 library(tidyverse)
 
@@ -43,9 +41,9 @@ scotland_level_clean <-
 ```
 
 
-### Show Number of Incidences Across Scotland Over Time - graph
+### Show Number of Incidences Across Scotland Over Time
 
-```{r}
+```{r,echo = FALSE}
 
 scotland_level_clean %>% 
   filter(cancer_type == "All") %>% 
@@ -65,8 +63,21 @@ scotland_level_clean %>%
 
 ```
 
+### Show Number of Incidences in Each Health Board Over Time
+#### From 1994 to 2018:
 
-### Show Number of Incidences in Each Health Board Over Time - table
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+health_board_level_clean %>% 
+  group_by(health_board_name) %>% 
+  filter(cancer_type == "All") %>% 
+  summarise(total_number_of_incidences = sum(number_of_incidences)) %>% 
+  arrange(desc(total_number_of_incidences))
+
+```
+
+
+
 ### Show Number of Incidences in Borders Over Time for All Cancer - graph
 ### Show Number of Incidences in Borders Over Time for Individual Cancers - table
 
