@@ -117,20 +117,17 @@ geography_codes_raw <- geography_codes_raw %>%
 health_board_level_clean <- health_board_level_clean %>% 
   inner_join(geography_codes_raw, by = "health_board")
 
+#6 Select Relevant Columns
+
+health_board_level_clean <- health_board_level_clean %>% 
+  select(-health_board, -hb_date_enacted, -hb_date_archived, -country)
+
+#7 Write to Clean Data 
+
+write_csv(health_board_level_clean, "clean_data/health_board_level_clean")
 
 
 
-
-
-
-
-# Analysis Stage
-
-#1 Show Number of Incidences Across Scotland Over Time - graph
-#2 Show Number of Incidences in each Region Over Time - graph
-#3 Show Number of Incidences in Each Health Board Over Time - table
-#4 Show Number of Incidences in Borders Over Time for All Cancer - graph
-#5 Show Number of Incidences in Borders Over Time for Individual Cancers - table
 
 
 
