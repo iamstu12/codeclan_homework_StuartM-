@@ -44,8 +44,10 @@ project <- read_csv("data/project_management.csv")
 
 project %>% 
   ggplot(aes(x = estimated_length, y = actual_length)) +
-  geom_point() +
-  theme_light()
+  geom_point(col = "#666633") +
+  theme_light() +
+    labs(title = "Project Length Graph", subtitle = "Relationship between estimated project length and actual project length",
+       x = "Estimated Length", y = "Actual Length")
 
 ```
 
@@ -62,7 +64,7 @@ project %>%
 
 ```
 
-#### A correlation coefficient of 0.80 is a very strong, positive correlation, which means that as the estimated length increases in the x-axis, the actual length also increases.
+#### A correlation coefficient of 0.80 is a very strong, positive correlation, which means that as the estimated length increases along the x-axis, the actual length also increases.
 
 <br>
 
@@ -83,8 +85,10 @@ model
 
 ### Interpret the regression coefficient of estimated_length (i.e. slope, gradient) you obtain from the model. How do you interpret the r2 value reported by the model?
 
-#### fitted actual_length = 1.416 + 1.223 * estimated_length
-#### 1x increase in estimated_length, changes teh actual_length by 1.223.
+<br>
+
+#### Answer - fitted actual_length = 1.416 + 1.223 * estimated_length
+#### 1x increase in estimated_length, changes the actual_length by 1.223.
 
 <br>
 
@@ -96,17 +100,30 @@ model
 
 project %>%
   ggplot(aes(x = estimated_length, y = actual_length)) +
-  geom_point() +
+  geom_point(col = "#666633") +
   geom_abline(
     intercept = model$coefficients[1],
     slope = model$coefficients[2],
     col = "#cc9900"
   ) +
-  theme_light()
+  theme_light() +
+  labs(title = "Project Length Graph", subtitle = "Relationship between estimated project length and actual project length",
+       x = "Estimated Length", y = "Actual Length", caption = "*** Yellow line = Best Fit ***")
 
 ```
 
+
+```{r}
+
+glance <- glance(model)
+
+glance$p.value
+
 ```
+
+<br>
+
+#### Answer - As the p-value is less than a significance level of both 0.01 and 0.05 (typic), the coefficient is significantly different from zero.
 
 <br>
 <hr>
