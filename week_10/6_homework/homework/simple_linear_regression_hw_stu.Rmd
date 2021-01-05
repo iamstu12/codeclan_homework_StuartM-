@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Load the data into a dataframe project
 
-```{r, echo=FALSE}
+```{r, warning=FALSE, message=FALSE}
 
 library(tidyverse)
 library(modelr)
@@ -38,6 +38,15 @@ project <- read_csv("data/project_management.csv")
 # Part 2
 
 ### Plot the data, taking estimated_length as the independent variable and actual_length as the dependent variable.
+
+```{r}
+
+project %>% 
+  ggplot(aes(x = estimated_length, y = actual_length)) +
+  geom_point()
+
+```
+
 
 # Part 3
 
