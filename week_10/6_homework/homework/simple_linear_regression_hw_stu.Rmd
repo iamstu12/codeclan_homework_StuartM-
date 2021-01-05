@@ -34,6 +34,7 @@ project <- read_csv("data/project_management.csv")
 
 ```
 
+<br>
 
 # Part 2
 
@@ -47,20 +48,71 @@ project %>%
 
 ```
 
+<br>
 
 # Part 3
 
 ### Calculate the correlation coefficient of estimated_length and actual_length and interpret the value you obtain.
 
+```{r}
+
+
+
+```
+
+<br>
+
 # Part 4 
 
 ### Perform a simple linear regression using actual_length as the dependent variable, and estimated_length as the independent variable. Save the model object to a variable.
+
+```{r}
+
+
+
+```
+
+
+<br>
 
 # Part 5
 
 ### Interpret the regression coefficient of estimated_length (i.e. slope, gradient) you obtain from the model. How do you interpret the r2 value reported by the model?
 
+```{r}
+
+
+
+```
+
+
+<br>
+
 # Part 6
 
 ### Is the relationship statistically significant? Remember, to assess this you need to check the p-value of the regression coefficient (or slope/gradient). But you should first check the regression diagnostic plots to see if the p-value will be reliable (don’t worry about any outlier points you see in the diagnostic plots, we’ll return to them in the extension).
+
+```{r}
+
+
+
+```
+
+<br>
+<hr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
