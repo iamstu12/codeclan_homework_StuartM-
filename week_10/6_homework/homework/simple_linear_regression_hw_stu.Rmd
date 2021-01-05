@@ -44,7 +44,8 @@ project <- read_csv("data/project_management.csv")
 
 project %>% 
   ggplot(aes(x = estimated_length, y = actual_length)) +
-  geom_point()
+  geom_point() +
+  theme_light()
 
 ```
 
@@ -82,12 +83,8 @@ model
 
 ### Interpret the regression coefficient of estimated_length (i.e. slope, gradient) you obtain from the model. How do you interpret the r2 value reported by the model?
 
-```{r}
-
-
-
-```
-
+#### fitted actual_length = 1.416 + 1.223 * estimated_length
+#### 1x increase in estimated_length, changes teh actual_length by 1.223.
 
 <br>
 
@@ -97,7 +94,17 @@ model
 
 ```{r}
 
+project %>%
+  ggplot(aes(x = estimated_length, y = actual_length)) +
+  geom_point() +
+  geom_abline(
+    intercept = model$coefficients[1],
+    slope = model$coefficients[2],
+    col = "#cc9900"
+  ) +
+  theme_light()
 
+```
 
 ```
 
