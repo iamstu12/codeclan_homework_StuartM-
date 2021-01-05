@@ -1,0 +1,57 @@
+---
+title: "Simple Linear Regression Homework"
+author: "Stuart McColl"
+date: "05/01/2021"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Part 1
+
+### Load the data into a dataframe project
+
+```{r, echo=FALSE}
+
+library(tidyverse)
+library(modelr)
+library(broom)
+library(ggfortify)
+library(infer)
+
+project <- read_csv("data/project_management.csv")
+
+```
+
+
+# Part 2
+
+### Plot the data, taking estimated_length as the independent variable and actual_length as the dependent variable.
+
+# Part 3
+
+### Calculate the correlation coefficient of estimated_length and actual_length and interpret the value you obtain.
+
+# Part 4 
+
+### Perform a simple linear regression using actual_length as the dependent variable, and estimated_length as the independent variable. Save the model object to a variable.
+
+# Part 5
+
+### Interpret the regression coefficient of estimated_length (i.e. slope, gradient) you obtain from the model. How do you interpret the r2 value reported by the model?
+
+# Part 6
+
+### Is the relationship statistically significant? Remember, to assess this you need to check the p-value of the regression coefficient (or slope/gradient). But you should first check the regression diagnostic plots to see if the p-value will be reliable (don’t worry about any outlier points you see in the diagnostic plots, we’ll return to them in the extension).
+
