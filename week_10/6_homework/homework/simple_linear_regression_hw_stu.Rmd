@@ -56,9 +56,12 @@ project %>%
 
 ```{r}
 
-
+project %>% 
+  summarise(cor = cor(estimated_length, actual_length))
 
 ```
+
+#### A correlation coefficient of 0.80 is a very strong, positive correlation, which means that as the estimated length increases in the x-axis, the actual length also increases.
 
 <br>
 
@@ -68,10 +71,10 @@ project %>%
 
 ```{r}
 
-
+model <- lm(formula = actual_length ~ estimated_length, data = project)
+model
 
 ```
-
 
 <br>
 
