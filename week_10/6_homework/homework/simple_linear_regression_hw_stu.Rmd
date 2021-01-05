@@ -123,7 +123,7 @@ glance$p.value
 
 <br>
 
-#### Answer - As the p-value is less than a significance level of both 0.01 and 0.05 (typic), the coefficient is significantly different from zero.
+#### Answer - As the p-value is less than a significance level of both 0.01 and 0.05 (typical), the coefficient is significantly different from zero.
 
 <br>
 <hr>
