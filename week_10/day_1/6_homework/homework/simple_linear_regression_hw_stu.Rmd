@@ -77,6 +77,8 @@ project %>%
 model <- lm(formula = actual_length ~ estimated_length, data = project)
 model
 
+summary(model)
+
 ```
 
 <br>
@@ -88,7 +90,7 @@ model
 <br>
 
 #### Answer - fitted actual_length = 1.416 + 1.223 * estimated_length
-#### 1x increase in estimated_length, changes the actual_length by 1.223.
+#### Approximately 65% of the variation in actual_length can be predicted from the variation in estimated_length..
 
 <br>
 
@@ -109,6 +111,13 @@ project %>%
   theme_light() +
   labs(title = "Project Length Graph", subtitle = "Relationship between estimated project length and actual project length",
        x = "Estimated Length", y = "Actual Length", caption = "*** Yellow line = Best Fit ***")
+
+```
+
+
+```{r}
+
+autoplot(model)
 
 ```
 
