@@ -69,7 +69,7 @@ glimpse(diamonds)
 
 ```
 
-<br>>
+<br>
 
 # Part 4.1
 
@@ -82,6 +82,8 @@ glimpse(diamonds)
 ggpairs(diamonds)
 
 ```
+
+<br>
 
 # Part 4.2
 
@@ -97,8 +99,63 @@ diamonds %>%
 
 ```
 
-# Part 5
+<br>
 
+# Part 5.1
+
+### Shortly, we may try a regression fit using one or more of the categorical predictors; cut, clarity and color, so let’s investigate these predictors:
+
+### Investigate the factor levels of these predictors. How many dummy variables do you expect for each of them?
+
+```{r}
+
+diamonds %>% 
+  distinct(cut) 
+
+diamonds %>% 
+  distinct(color)
+
+diamonds %>% 
+  distinct(clarity)
+
+
+```
+
+<br>
+
+# Part 5.2
+
+### Use the dummy_cols() function in the fastDummies package to generate dummies for these predictors and check the number of dummies in each case.
+
+```{r}
+
+diamonds_dummy <- diamonds %>% 
+  dummy_cols(select_columns = c("cut", "color", "clarity"), remove_first_dummy = TRUE,
+             remove_selected_columns = TRUE)
+
+diamonds_dummy
+
+```
+
+<br>
+
+# Part 6.1
+
+### Going forward we’ll let R handle dummy variable creation for categorical predictors in regression fitting (remember lm() will generate the correct numbers of dummy levels automatically, absorbing one of the levels into the intercept as a reference level)
+
+### First, we’ll start with simple linear regression. Regress price on carat and check the regression diagnostics.
+
+```{r}
+
+diamonds_model1 <- lm(price ~ carat, data = diamonds)
+
+summary(diamonds_model1)
+
+```
+
+### Therefore, if carat goes up by a factor of 1, then price goes up by 7,756
+
+<br>
 
 
 
