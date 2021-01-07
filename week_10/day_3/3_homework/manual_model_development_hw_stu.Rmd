@@ -31,10 +31,95 @@ library(modelr)
 library(GGally)
 library(relaimpo)
 library(lm.beta)
+library(fastDummies)
 
 houses <- read_csv("data/kc_house_data.csv")
 
 ```
+
+Check for any missing values:
+
+```{r}
+
+houses %>%
+  summarise_all(funs(sum(is.na(.))))
+
+```
+
+Remove columns that are not useful:
+
+```{r}
+
+houses_clean <- houses %>% 
+  dplyr::select(-c(date, id, sqft_living15, sqft_lot15, zipcode))
+
+names(houses_clean)
+
+```
+
+Covert waterfront into a logical variable:
+
+```{r}
+
+houses_clean <- houses_clean %>% 
+  mutate(waterfront = ifelse(waterfront == 1, T, F))
+
+houses_clean
+
+```
+
+Convert 'yr_renovated' into a 'renovated' logical variable:
+
+```{r}
+
+houses_clean <- houses_clean %>% 
+  mutate(renovated = ifelse(yr_renovated == 0, F, T)) %>% 
+  dplyr::select(-yr_renovated)
+
+houses_clean
+
+```
+
+'Condition' and 'Grade' are both categorical variables. To model the data accurately, it is important to create 'dummy variables' for both condition and grade, which are 'true' or 'false' only:
+
+```{r}
+
+houses_clean %>% 
+  summarise(min_grade = min(grade), max_grade = max(grade),
+            min_condition = min(condition), max_condition = max(condition))
+
+```
+
+```{r}
+
+houses_dummy <- houses_clean %>%
+  dummy_cols(select_columns = c("grade", "condition"), remove_first_dummy = T) %>% 
+  dplyr::select(-c(condition, grade))
+
+houses_dummy
+  
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
