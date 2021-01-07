@@ -101,8 +101,40 @@ houses_dummy
 
 ```
 
+# Part 2
+
+### Check and remove aliased variables
+
+```{r}
+
+alias(lm(price ~ ., data = houses_dummy))
+
+# alias = 'sqft_basement'
+
+```
 
 
+```{r}
+
+houses_trim <- houses_dummy %>% 
+  dplyr::select(-sqft_basement)
+
+houses_trim
+
+```
+
+```{r}
+
+alias(lm(price ~ ., data = houses_trim))
+
+# no aliases found
+
+```
+
+
+# Part 3
+
+### Regression Models
 
 
 
