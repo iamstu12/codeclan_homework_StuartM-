@@ -30,7 +30,7 @@ library(ggfortify)
 library(mosaic)
 library(fastDummies)
 
-diamonds <- read_csv("/Users/Natifu/codeclan_homework_StuartM/week_10/day_2/4_diamonds_hw/data/diamonds.csv")
+diamonds <- read_csv("data/diamonds.csv")
 
 ```
 
@@ -92,7 +92,7 @@ ggpairs(diamonds)
 ```{r}
 
 diamonds %>% 
-  ggplot(aes(x = price, y = carat)) +
+  ggplot(aes(x = carat, y = price)) +
   geom_point(colour = "#484848") +
   geom_smooth(method = "lm", se = FALSE, colour = "#b38600") +
   theme_light()

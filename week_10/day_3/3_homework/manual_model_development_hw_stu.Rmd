@@ -1,0 +1,40 @@
+---
+title: "Manual Model Development"
+author: "Stuart McColl"
+date: "07/01/2021"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Part 1 
+
+### Tidy up the data ready for regression
+
+Load libraries and data:
+
+```{r, message=FALSE, warning=FALSE}
+
+library(car)
+library(tidyverse)
+library(modelr)
+library(GGally)
+library(relaimpo)
+library(lm.beta)
+
+houses <- read_csv("data/kc_house_data.csv")
+
+```
+
+
+
