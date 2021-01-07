@@ -131,17 +131,162 @@ alias(lm(price ~ ., data = houses_trim))
 
 ```
 
-
 # Part 3
 
 ### Regression Models
 
+First predictor
+
+```{r, message=FALSE, warning=FALSE}
+
+houses_trim_numeric <- houses_trim %>%
+  select_if(is.numeric)
+
+houses_trim_nonnumeric <- houses_trim %>%
+  select_if(function(x) !is.numeric(x))
+
+houses_trim_nonnumeric$price <- houses_trim$price
+
+ggpairs(houses_trim_numeric)
+ggpairs(houses_trim_nonnumeric)
+
+```
+
+Model 1
+
+Price ~ Bedrooms
+
+```{r}
+
+model1 <- lm(price ~ bedrooms, data = houses_trim)
+
+model1
+
+```
+
+#### This  tells us that the predicted 'price' will increase by 121,716 for every extra bedroom.
+
+Summary
+
+```{r}
+
+summary(model1)
+
+```
+
+#### This tells us that 9.5% of the variance in price is based on the number of bedrooms
+
+Plot
+
+```{r}
+
+par(mfrow = c(2, 2)) 
+
+plot(model1)
+
+```
 
 
+Model 2
+
+Price ~ sqft_living
+
+```{r}
+
+model2 <- lm(price ~ sqft_living, data = houses_trim)
+
+model2
+
+```
+
+#### This  tells us that the predicted 'price' will increase by 280.6 for every sqft.
+
+Summary
+
+```{r}
+
+summary(model2)
+
+```
+
+#### This tells us that 49% of the variance in price is based on the sqft of living.
+
+Plot
+
+```{r}
+
+par(mfrow = c(2, 2)) 
+
+plot(model2)
+
+```
+
+Model 3
+
+Price ~ Condition
+
+```{r}
+
+model3 <- lm(price ~ condition_2 + condition_3 + condition_4 + condition_5, data = houses_trim)
+
+model3
+
+```
+
+#### This tells us that 'condition 5', increase the price the most.
+
+Summary
+
+```{r}
+
+summary(model3)
+
+```
+
+#### This tells us that condition only accounts for 0.6% of the variance in price.
+
+Plot
+
+```{r}
+
+par(mfrow = c(2, 2)) 
+
+plot(model3)
+
+````
 
 
+Model 4
 
+Price ~ Waterfront
 
+```{r}
+
+model4 <- lm(price ~ waterfront, data = houses_trim)
+
+model4
+
+```
+
+```{r}
+
+summary(model4)
+
+```
+
+Model 5
+
+Price ~ bedrooms + sqft_living
+
+```{r}
+
+model5 <- lm(price ~ bedrooms + sqft_living, data = houses_trim)
+
+summary(model5)
+
+```
+
+#### This tells us that bedrooms and sqft_living account for 50% of the variance in price.
 
 
 
