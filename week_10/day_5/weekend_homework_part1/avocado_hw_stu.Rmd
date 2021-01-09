@@ -32,6 +32,7 @@ library(modelr)
 library(GGally)
 library(lm.beta)
 library(janitor)
+library(lubridate)
 
 avocado_raw <- read_csv("data/avocado.csv") %>% 
   clean_names()
@@ -44,10 +45,314 @@ avocado_raw <- read_csv("data/avocado.csv") %>%
 
 ```{r}
 
+glimpse(avocado_raw)
+
+```
+
+My initial thoughts are to drop the following columns as they all add up 
+to the 'total_volume':
+
+* x4046
+* x4225
+* x4770
+* total_bags
+* small_bags
+* large_bags
+* x_large_bags
+
+However, it may be worth keeping them and checking for any correlations,
+the number of 'small_bags' sold, for example, may have an affect on 
+'average_price'. Therefore, it might be better to drop the 'total_volume' 
+and 'total_bags' columns as the other columns add up to these totals.
+
+I would also convert the 'type' column to a 'factor', i.e. T or F 
+if organic or not. 
+
+Initial thoughts on the columns:
+
+**1. date: The date of the observation**
+
+Extracting the month could create a useful predictor.
+
+**2. average_price: the average price of a single avocado**
+
+This is the outcome.
+
+**3. total_volume: Total number of avocados sold**
+
+Could drop as other columns add up to this.
+
+**4. x4046: Total number of avocados with PLU 4046 sold**
+
+Potential predictor.
+
+**5. x4225: Total number of avocados with PLU 4225 sold**
+
+Potential predictor.
+
+**6. x4770: Total number of avocados with PLU 4770 sold**
+
+Potential predictor.
+
+**7. total_bags**
+
+Could drop as other columns add up to this.
+
+**8. small_bags**
+
+Potential predictor.
+
+**9. large_bags**
+
+Potential predictor.
+
+**10. x_large_bags**
+
+Potential predictor.
+
+**11. type: conventional or organic**
+
+Potential predictor. Change to 'factor'.
+
+**12. year: the year**
+
+Potential predictor. May drop due to amount of dummy variables.
+
+**13. region: the city or region of the observation**
+
+Potential predictor.
+
+#### Cleaning
+
+```{r}
+
+# Convert 'type' column to 'organic', T or F:
+
+avocado_clean <- avocado_raw %>% 
+  mutate(organic = ifelse(type == "organic", TRUE, FALSE)) 
+
+avocado_clean
+
+```
+
+```{r}
+
+# Extract 'month' from 'date' using 'lubridate':
+
+avocado_clean <- avocado_clean %>%
+  mutate(month = as.factor(month(date, label = T, abbr = F)))
+
+avocado_clean
+
+```
+
+```{r}
+
+# Select relevant columns:
+
+avocado_clean <- avocado_clean %>% 
+  dplyr::select(-c(x1, date, total_volume, total_bags, type, region))
+
+avocado_clean
+
+```
+
+```{r}
+
+# Change categorical columns to 'factor' class:
+
+avocado_clean <- avocado_clean %>% 
+  mutate(organic = as.factor(organic)) %>% 
+  mutate(year = as.factor(year)) 
+
+avocado_clean
 
 
 ```
 
+```{r}
+
+# Create a new column for 'season':
+
+avocado_clean <- avocado_clean %>% 
+  mutate(season = recode(month, 
+                         December = "Winter",
+                         January = "Winter",
+                         February = "Winter",
+                         March = "Spring",
+                         April = "Spring",
+                         May = "Spring",
+                         June = "Summer",
+                         July = "Summer",
+                         August = "Summer",
+                         September = "Autumn",
+                         October = "Autumn",
+                         November = "Autumn"
+                         ))
+
+avocado_clean
+
+```
+
+```{r}
+
+# Check for correlations in the numeric variables:
+
+avocado_clean %>% 
+  summarise(x4046_cor = cor(average_price, x4046), 
+            x4225_cor = cor(average_price, x4225),
+            x4770_cor = cor(average_price, x4770),
+            small_bags_cor = cor(average_price, small_bags),
+            large_bags_cor = cor(average_price, large_bags),
+            x_large_bags = cor(average_price, x_large_bags))
+
+
+# This shows us that the numeric variable have a negative affect on the average
+# price, particularly the 'x4046' variable.
+
+
+```
+
+```{r}
+
+avocado_clean_numeric <- avocado_clean %>%
+  select_if(is.numeric)
+
+
+avocado_clean_nonnumeric <- avocado_clean %>%
+  select_if(function(x) !is.numeric(x))
+
+avocado_clean_nonnumeric$average_price <- avocado_clean$average_price
+
+```
+
+```{r}
+
+alias(lm(average_price ~ ., data = avocado_clean))
+
+```
+
+
+```{r}
+
+avocado_clean <- avocado_clean %>% 
+  dplyr::select(-month)
+
+alias(lm(average_price ~ ., data = avocado_clean))
+
+# alias 'month' now removed
+
+```
+
+
+# Part 3
+
+### Model building
+
+```{r}
+
+model1 <- lm(average_price ~ x4046, data = avocado_clean)
+
+summary(model1)
+
+```
+
+```{r}
+
+model2 <- lm(average_price ~ x4225 , data = avocado_clean)
+
+summary(model2)
+
+```
+
+
+```{r}
+
+model3 <- lm(average_price ~  x4770 , data = avocado_clean)
+
+summary(model3)
+
+```
+
+
+```{r}
+
+model4 <- lm(average_price ~  small_bags , data = avocado_clean)
+
+summary(model4)
+
+```
+
+
+```{r}
+
+model5 <- lm(average_price ~  large_bags , data = avocado_clean)
+
+summary(model5)
+
+```
+
+
+```{r}
+
+model6 <- lm(average_price ~  x_large_bags , data = avocado_clean)
+
+summary(model6)
+
+```
+
+
+```{r}
+
+model7 <- lm(average_price ~  year , data = avocado_clean)
+
+summary(model7)
+
+```
+
+```{r}
+
+model8 <- lm(average_price ~  organic , data = avocado_clean)
+
+summary(model8)
+
+```
+
+
+```{r}
+
+model9 <- lm(average_price ~ season, data = avocado_clean)
+
+summary(model9)
+
+```
+
+
+R-Squared Results:
+
+Model 1 = 0.0434 - 3
+Model 2 = 0.0299 - 8
+Model 3 = 0.0322 - 5
+Model 4 = 0.03053 - 6
+Model 5 = 0.02991 - 7
+Model 6 = 0.01383 - 9
+Model 7 = 0.03489 - 4
+Model 8 = 0.3793 - 1
+Model 9 = 0.05164 - 2
+
+Ranked:
+
+1. Model 8 - organic
+2. Model 9 - season
+3. Model 1 - x4046
+
+```{r}
+
+model10 <- lm(average_price ~ organic + season + x4046, data = avocado_clean)
+
+summary(model10)
+
+```
 
 
 

@@ -1,0 +1,21 @@
+---
+title: "Quiz"
+author: "Stuart McColl"
+date: "09/01/2021"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
