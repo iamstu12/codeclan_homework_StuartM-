@@ -1,0 +1,61 @@
+---
+title: "Model Building"
+author: "Stuart McColl"
+date: "09/01/2021"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Part 1
+
+### Load in libraries and data
+
+```{r, warning=FALSE, message=FALSE}
+
+library(tidyverse)
+library(leaps)
+library(glmulti)
+library(relaimpo)
+library(modelr)
+library(GGally)
+library(lm.beta)
+library(janitor)
+
+avocado_raw <- read_csv("data/avocado.csv") %>% 
+  clean_names()
+
+```
+
+# Part 2
+
+### Prepare data for modelling
+
+```{r}
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
