@@ -17,5 +17,119 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Question 1
+
+I want to predict how well 6 year-olds are going to do in their final school 
+exams. Using the following variables am I likely under-fitting, fitting well 
+or over-fitting? Postcode, gender, reading level, score in maths test, date 
+of birth, family income.
+
+Answer - Over-fitting. Too many variables.
+
+# Question 2
+
+If I have two models, one with an AIC score of 34,902 and the other with an 
+AIC score of 33,559 which model should I use?
+
+Answer - AIC score of 33,559
+
+# Question 3
+
+I have two models, the first with: r-squared: 0.44, adjusted r-squared: 0.43. 
+The second with: r-squared: 0.47, adjusted r-squared: 0.41. Which one 
+should I use?
+
+Answer - The second one.
+
+# Question 4
+
+I have a model with the following errors: RMSE error on test set: 10.3, RMSE 
+error on training data: 10.4. Do you think this model is over-fitting?
+
+Answer - Yes
+
+# Question 5
+
+How does k-fold validation work?
+
+Answer - The data is split into equal parts, say 5 fold for example - the 
+data will be split into 5 parts. We then make a model 5 times. Each time 
+we hold out one of the 5 folds as the test set, and train the data on the 
+other 4 folds.
+
+# Question 6
+
+What is a validation set? When do you need one?
+
+Answer - A validation dataset is a sample of data held back from training 
+your model that is used to give an estimate of model accuracy.  
+
+# Question 7
+
+Describe how backwards selection works.
+
+Answer - Backwards selection starts with a model that contains all the possible
+predictors in the data set. You would systematically remove the predictors
+that lower the r squared value the least. 
+
+# Question 8
+
+Describe how best subset selection works.
+
+Answer - Best subset selection involves comparing all the models available
+to see which one best fits the data set.
+
+
+# Question 9
+
+It is estimated on 5% of model projects end up being deployed. What actions 
+can you take to maximise the likelihood of your model being deployed?
+
+# Question 10
+
+What metric could you use to confirm that the recent population is similar 
+to the development population?
+
+# Question 11
+
+How is the Population Stability Index defined? What does this mean in words?
+
+Answer - The population stability index (PSI) is a statistic that measures 
+how much a variable has shifted over time, and is used to monitor 
+applicability of a statistical model to the current population.
+
+# Question 12
+
+Above what PSI value might we need to start to consider rebuilding or 
+re-calibrating the model
+
+Answer - A PSI greater than 0.25 means there is a significant shift, therefore
+rebuilding or re-calibrating the model will be required.
+
+# Question 13
+
+What are the common errors that can crop up when implementing a model?
+
+Answer - Human bias and over-fitting.
+
+# Question 14
+
+After performance monitoring, if we find that the discrimination is still 
+satisfactory but the accuracy has deteriorated, what is the recommended action?
+
+# Question 15
+
+Why is it important to have a unique model identifier for each model?
+
+Answer - To allow for easy distinction and interpretation, especially when
+you are comparing two models against each other.
+
+# Question 16
+
+Why is it important to document the modelling rationale and approach?
+
+Answer - Accountability and readability. It is important to document the 
+approach as you may re-visit the model in the future.
+
 
 

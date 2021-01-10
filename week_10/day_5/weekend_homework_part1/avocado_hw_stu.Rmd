@@ -33,6 +33,7 @@ library(GGally)
 library(lm.beta)
 library(janitor)
 library(lubridate)
+library(fastDummies)
 
 avocado_raw <- read_csv("data/avocado.csv") %>% 
   clean_names()
@@ -48,6 +49,14 @@ avocado_raw <- read_csv("data/avocado.csv") %>%
 glimpse(avocado_raw)
 
 ```
+
+
+```{r}
+
+summary(avocado_raw)
+
+```
+
 
 My initial thoughts are to drop the following columns as they all add up 
 to the 'total_volume':
@@ -72,11 +81,12 @@ Initial thoughts on the columns:
 
 **1. date: The date of the observation**
 
-Extracting the month could create a useful predictor.
+Extracting the month and maybe creating a season column could create 
+a useful predictor.
 
 **2. average_price: the average price of a single avocado**
 
-This is the outcome.
+This is the outcome or 'y'.
 
 **3. total_volume: Total number of avocados sold**
 
@@ -116,11 +126,11 @@ Potential predictor. Change to 'factor'.
 
 **12. year: the year**
 
-Potential predictor. May drop due to amount of dummy variables.
+Potential predictor. 
 
 **13. region: the city or region of the observation**
 
-Potential predictor.
+Potential predictor. May drop due to amount of dummy variables.
 
 #### Cleaning
 
@@ -129,7 +139,7 @@ Potential predictor.
 # Convert 'type' column to 'organic', T or F:
 
 avocado_clean <- avocado_raw %>% 
-  mutate(organic = ifelse(type == "organic", TRUE, FALSE)) 
+  mutate(organic = ifelse(type == "organic", 1, 0)) 
 
 avocado_clean
 
@@ -162,7 +172,6 @@ avocado_clean
 # Change categorical columns to 'factor' class:
 
 avocado_clean <- avocado_clean %>% 
-  mutate(organic = as.factor(organic)) %>% 
   mutate(year = as.factor(year)) 
 
 avocado_clean
@@ -196,7 +205,26 @@ avocado_clean
 
 ```{r}
 
-# Check for correlations in the numeric variables:
+# Create dummy variable for Season to allow for correlation calculation:
+
+avocado_clean <- avocado_clean %>% 
+  mutate(season_spring = ifelse(season == "Spring", 1, 0)) %>% 
+  mutate(season_summer = ifelse(season == "Summer", 1, 0)) %>% 
+  mutate(season_spring = ifelse(season == "Spring", 1, 0)) %>% 
+  mutate(season_autumn = ifelse(season == "Autumn", 1, 0)) %>% 
+  mutate(season_winter = ifelse(season == "Winter", 1, 0))
+
+
+avocado_clean
+
+```
+
+
+
+
+```{r}
+
+# Check for correlations in the variables:
 
 avocado_clean %>% 
   summarise(x4046_cor = cor(average_price, x4046), 
@@ -204,155 +232,197 @@ avocado_clean %>%
             x4770_cor = cor(average_price, x4770),
             small_bags_cor = cor(average_price, small_bags),
             large_bags_cor = cor(average_price, large_bags),
-            x_large_bags = cor(average_price, x_large_bags))
-
-
-# This shows us that the numeric variable have a negative affect on the average
-# price, particularly the 'x4046' variable.
+            x_large_bags_cor = cor(average_price, x_large_bags),
+            organic_cor = cor(average_price, organic),
+            season_spring_cor = cor(average_price, season_spring),
+            season_summer_cor = cor(average_price, season_summer),
+            season_autumn_cor = cor(average_price, season_autumn),
+            season_winter_cor = cor(average_price, season_winter))
 
 
 ```
 
-```{r}
+I decided to use the cor() function instead of using ggpairs(), because I find
+it difficult to interpret the results of ggpair(), especially when there are a lot of 
+variables.
 
-avocado_clean_numeric <- avocado_clean %>%
-  select_if(is.numeric)
+This method does take longer and requires dummy variable to be created for 
+categorical variables, however I feel that it is more thorough and easier to
+interpret.
 
+The correlation results allow you to make a selection for the modeling.
 
-avocado_clean_nonnumeric <- avocado_clean %>%
-  select_if(function(x) !is.numeric(x))
+RESULTS
 
-avocado_clean_nonnumeric$average_price <- avocado_clean$average_price
+As you can see from the correlation test above, the following had the top,
+positive correlation:
 
-```
-
-```{r}
-
-alias(lm(average_price ~ ., data = avocado_clean))
-
-```
-
-
-```{r}
-
-avocado_clean <- avocado_clean %>% 
-  dplyr::select(-month)
-
-alias(lm(average_price ~ ., data = avocado_clean))
-
-# alias 'month' now removed
-
-```
+1. organic_cor = 0.6158449
+2. season_autumn_cor = 0.1770793
+3. season_summer_cor = 0.07696605
 
 
 # Part 3
 
 ### Model building
 
-```{r}
-
-model1 <- lm(average_price ~ x4046, data = avocado_clean)
-
-summary(model1)
-
-```
+Let’s start with organic:
 
 ```{r}
 
-model2 <- lm(average_price ~ x4225 , data = avocado_clean)
+model_organic <- lm(average_price ~ organic, data = avocado_clean)
 
-summary(model2)
+summary(model_organic)
 
 ```
 
+This is a good start, as you can see that organic accounts for 37% of the 
+variance in average price.
+
+Check the diagnostics:
 
 ```{r}
 
-model3 <- lm(average_price ~  x4770 , data = avocado_clean)
+par(mfrow = c(2, 2)) 
 
-summary(model3)
+plot(model_organic)
 
 ```
 
+The results from the diagnostics show that the fitted values are very spread 
+out and therefore not a great fit. The 'Q-Q' results start off okay, then 
+move away towards the end.
+
+Season Autumn:
 
 ```{r}
 
-model4 <- lm(average_price ~  small_bags , data = avocado_clean)
+model_autumn <- lm(average_price ~ season_autumn, data = avocado_clean)
 
-summary(model4)
+summary(model_autumn)
 
 ```
 
+This is not such a great model as the r squared value is very low, only 3%.
+
+Diagnostics:
 
 ```{r}
 
-model5 <- lm(average_price ~  large_bags , data = avocado_clean)
+par(mfrow = c(2, 2)) 
 
-summary(model5)
+plot(model_autumn)
 
 ```
 
+The diagnostics show similar results to the previous model, only worse.
+
+Summer Model:
 
 ```{r}
 
-model6 <- lm(average_price ~  x_large_bags , data = avocado_clean)
+model_summer <- lm(average_price ~ season_summer, data = avocado_clean)
 
-summary(model6)
+summary(model_summer)
 
 ```
 
+This is an even weaker model.
+
+Diagnostics:
 
 ```{r}
 
-model7 <- lm(average_price ~  year , data = avocado_clean)
+par(mfrow = c(2, 2)) 
 
-summary(model7)
+plot(model_summer)
 
 ```
+
+Similar to the autumn model above.
+
+Winner = Organic for 1st predictor.
+
+Second predictor:
 
 ```{r}
 
-model8 <- lm(average_price ~  organic , data = avocado_clean)
+model_organic_autumn <- lm(average_price ~ organic + season_autumn, data = avocado_clean)
 
-summary(model8)
+summary(model_organic_autumn)
 
 ```
 
+As you can see from the results, adding in the Autumn variable has increased
+the r squared value from 37% to 41%.
+
+Diagnostics:
 
 ```{r}
 
-model9 <- lm(average_price ~ season, data = avocado_clean)
+par(mfrow = c(2, 2)) 
 
-summary(model9)
+plot(model_organic_autumn)
 
 ```
 
+The diagnostics are still not ideal.
 
-R-Squared Results:
-
-Model 1 = 0.0434 - 3
-Model 2 = 0.0299 - 8
-Model 3 = 0.0322 - 5
-Model 4 = 0.03053 - 6
-Model 5 = 0.02991 - 7
-Model 6 = 0.01383 - 9
-Model 7 = 0.03489 - 4
-Model 8 = 0.3793 - 1
-Model 9 = 0.05164 - 2
-
-Ranked:
-
-1. Model 8 - organic
-2. Model 9 - season
-3. Model 1 - x4046
+Organic Summer Model:
 
 ```{r}
 
-model10 <- lm(average_price ~ organic + season + x4046, data = avocado_clean)
+model_organic_summer <- lm(average_price ~ organic + season_summer, data = avocado_clean)
 
-summary(model10)
+summary(model_organic_summer)
 
 ```
+
+This has had very little effect on the r squared value.
+
+Include all three variable in model:
+
+```{r}
+
+model_organic_autumn_summer <- lm(average_price ~ organic + season_autumn + season_summer, data = avocado_clean)
+
+summary(model_organic_autumn_summer)
+
+```
+
+This final model, including all three variables is okay, the r squared value
+is around 43%.
+
+Perhaps if I had included 'region' into the model making, I would of been able
+to increase the r squared value.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
