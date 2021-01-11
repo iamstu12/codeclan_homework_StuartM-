@@ -210,7 +210,6 @@ avocado_clean
 avocado_clean <- avocado_clean %>% 
   mutate(season_spring = ifelse(season == "Spring", 1, 0)) %>% 
   mutate(season_summer = ifelse(season == "Summer", 1, 0)) %>% 
-  mutate(season_spring = ifelse(season == "Spring", 1, 0)) %>% 
   mutate(season_autumn = ifelse(season == "Autumn", 1, 0)) %>% 
   mutate(season_winter = ifelse(season == "Winter", 1, 0))
 
@@ -218,7 +217,6 @@ avocado_clean <- avocado_clean %>%
 avocado_clean
 
 ```
-
 
 
 
@@ -395,42 +393,5 @@ is around 43%.
 
 Perhaps if I had included 'region' into the model making, I would of been able
 to increase the r squared value.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
