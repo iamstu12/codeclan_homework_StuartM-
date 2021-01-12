@@ -1,0 +1,416 @@
+---
+title: "Decision Tree Homework"
+author: "Stuart McColl"
+date: "12/01/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+library(rpart)
+library(rpart.plot)
+library(tidyverse)
+library(janitor)
+library(GGally)
+library(modelr)
+library(broom)
+library(ggfortify)
+library(readxl)
+library(pROC)
+library(caret)
+library(yardstick)
+
+library(tidyverse)
+titanic_set <- read_csv('data/titanic_decision_tree_data.csv')
+
+shuffle_index <- sample(1:nrow(titanic_set))
+
+# shuffle the data so class order isn't in order - need this for training/testing split later on 
+titanic_set <- titanic_set[shuffle_index, ]
+
+```
+
+
+# Question 1
+
+Cleaning up the data is always the first step. Do the following:
+
+* Take only observations which have a survived flag (i.e. that aren’t missing)
+* Turn your important variables into factors (sex, survived, pclass, embarkation)
+* Create an age_status variable which groups individuals under (and including) 16 years of age into a category called “child” category and those over 16 into a category called “adult”.
+* Drop the NA
+* Drop any variables you don’t need (X1, passenger_id, name, ticket, far, cabin)
+
+
+```{r}
+
+titanic_clean <- titanic_set %>%
+  filter(survived %in% c(0,1)) %>%
+# Convert to factor level
+    mutate(sex = as.factor(sex), 
+           age_status = as.factor(if_else(age <= 16, "child", "adult")),
+         class = factor(pclass, levels = c(3,2,1), labels = c("Lower", "Middle", "Upper")), 
+           survived_flag = factor(survived, levels = c(0,1), labels = c("No", "Yes")), 
+           port_embarkation = as.factor(embarked)) %>%
+  select(sex, age_status, class, port_embarkation, sib_sp, parch, survived_flag) %>%
+  na.omit()
+
+```
+
+
+# Question 2
+
+Have a look at your data and create some plots to ensure you know what you’re working with before you begin. Write a summary of what you have found in your plots. Which variables do you think might be useful to predict whether or not people are going to die? Knowing this before you start is the best way to have a sanity check that your model is doing a good job.
+
+```{r}
+
+glimpse(titanic_clean)
+
+summary(titanic_clean)
+
+```
+
+
+
+```{r}
+
+names(titanic_clean)
+
+```
+
+
+```{r}
+
+model_sex <- glm(survived_flag ~ sex, data = titanic_clean, family = binomial(link = "logit"))
+
+model_age <- glm(survived_flag ~ age_status, data = titanic_clean, family = binomial(link = "logit"))
+
+model_class <- glm(survived_flag ~ class, data = titanic_clean, family = binomial(link = "logit"))
+
+model_port <- glm(survived_flag ~ port_embarkation, data = titanic_clean, family = binomial(link = "logit"))
+
+model_sib <- glm(survived_flag ~ sib_sp, data = titanic_clean, family = binomial(link = "logit"))
+
+model_parch <- glm(survived_flag ~ parch, data = titanic_clean, family = binomial(link = "logit"))
+
+
+```
+
+
+```{r}
+
+tidy(model_sex) %>% 
+  clean_names() # very significant = 0.0000000000000000000000000000000000000001610748
+
+tidy(model_age) %>% 
+  clean_names() # little significance = 0.001586076
+
+tidy(model_class) %>% 
+  clean_names() # significance = 0.0000000000000000002551648
+
+tidy(model_port) %>% 
+  clean_names() # significance = 0.0000005753847
+
+tidy(model_sib) %>% 
+  clean_names() # no significance = 0.6788475
+
+tidy(model_parch) %>% 
+  clean_names() # very little significance = 0.01246924
+
+# Order of statistical significance:
+
+# 1. sex
+# 2. class
+# 3. port
+# 4. age
+# 5. parch
+# 6. sib
+
+# All p-values are less than 0.05, except 'model_pred-sib', which means they are
+# statistically significant.
+
+
+```
+
+
+```{r}
+
+# Add predictions
+
+model_age_pred <- titanic_clean %>% 
+  add_predictions(model_age, type = "response")
+
+model_class_pred <- titanic_clean %>% 
+  add_predictions(model_class, type = "response")
+
+model_parch_pred <- titanic_clean %>% 
+  add_predictions(model_parch, type = "response")
+
+model_port_pred <- titanic_clean %>% 
+  add_predictions(model_port, type = "response")
+
+model_age_pred <- titanic_clean %>% 
+  add_predictions(model_age, type = "response")
+
+model_sex_pred <- titanic_clean %>% 
+  add_predictions(model_sex, type = "response")
+
+```
+
+
+```{r}
+
+model_age_roc_obj <- model_age_pred %>% 
+  roc(response = age_status, predictor = pred)
+
+model_class_roc_obj <- model_age_pred %>% 
+  roc(response = class, predictor = pred)
+
+model_parch_roc_obj <- model_age_pred %>% 
+  roc(response = parch, predictor = pred)
+
+model_port_roc_obj <- model_age_pred %>% 
+  roc(response = port_embarkation, predictor = pred)
+
+model_sex_roc_obj <- model_age_pred %>% 
+  roc(response = sex, predictor = pred)
+
+
+```
+
+
+```{r}
+
+roc_curve <- ggroc(
+  data = list(
+    model_age_roc_obj = model_age_roc_obj,
+    model_class_roc_obj = model_class_roc_obj,
+    model_parch_roc_obj = model_parch_roc_obj,
+    model_port_roc_obj = model_port_roc_obj,
+    model_sex_roc_obj = model_sex_roc_obj
+  ),
+  legacy.axes = T) +
+  coord_fixed() +
+  theme_light()
+
+roc_curve
+
+
+```
+
+
+```{r}
+
+auc(model_age_roc_obj) # 1
+auc(model_class_roc_obj) # 4
+auc(model_parch_roc_obj) # 2
+auc(model_port_roc_obj) # 3
+auc(model_sex_roc_obj) # 5
+
+# Order of significance:
+
+# 1. model_age_roc_obj
+# 2. model_parch_roc_obj
+# 3. model_port_roc_obj
+# 4. model_class_roc_obj
+# 5. model_sex_roc_obj
+
+```
+
+
+# Question 3
+
+Now you can start to build your model. Create your testing and training set using an appropriate split. Check you have balanced sets. Write down why you chose the split you did and produce output tables to show whether or not it is balanced.
+
+```{r}
+
+train_control <- trainControl(method = "repeatedcv", 
+                              number = 5,
+                              repeats = 100,
+                              savePredictions = TRUE, 
+                              classProbs = TRUE, 
+                              summaryFunction = twoClassSummary)
+
+```
+
+
+```{r}
+
+model_age_cv <- train(model_age$formula,
+                           data = titanic_clean,
+                           trControl = train_control,
+                           method = "glm",
+                           family = binomial(link = "logit"))
+
+```
+
+
+```{r}
+
+model_class_cv <- train(model_class$formula,
+                           data = titanic_clean,
+                           trControl = train_control,
+                           method = "glm",
+                           family = binomial(link = "logit"))
+
+```
+
+
+
+```{r}
+
+model_parch_cv <- train(model_parch$formula,
+                           data = titanic_clean,
+                           trControl = train_control,
+                           method = "glm",
+                           family = binomial(link = "logit"))
+
+```
+
+
+```{r}
+
+
+model_port_cv <- train(model_port$formula,
+                           data = titanic_clean,
+                           trControl = train_control,
+                           method = "glm",
+                           family = binomial(link = "logit"))
+
+```
+
+
+```{r}
+
+model_sex_cv <- train(model_sex$formula,
+                           data = titanic_clean,
+                           trControl = train_control,
+                           method = "glm",
+                           family = binomial(link = "logit"))
+
+```
+
+```{r}
+
+model_age_cv$results
+model_class_cv$results
+model_parch_cv$results
+model_port_cv$results
+model_sex_cv$results
+
+```
+
+# Question 4
+
+Create your decision tree to try and predict survival probability using an appropriate method, and create a decision tree plot.
+
+```{r}
+
+# get how many rows we have in total to work out the percentage
+n_data <- nrow(titanic_clean)
+
+# create a test sample index
+test_index <- sample(1:n_data, size = n_data*0.2)
+
+# create test set
+titanic_test  <- slice(titanic_clean, test_index)
+
+# create training set
+titanic_train <- slice(titanic_clean, -test_index)
+
+```
+
+
+```{r}
+
+titanic_tree <- rpart(
+  formula = survived_flag ~ .,
+  data = titanic_train,
+  method = "class"
+)
+
+
+rpart.plot(titanic_tree, yesno = 2, fallen.leaves = TRUE, faclen = 6, digits = 4)
+
+```
+
+
+# Question 5
+
+Write down what this tells you, in detail. What variables are important? What does each node tell you? Who has the highest chance of surviving? Who has the lowest? Provide as much detail as you can.
+
+The tree above tells us that the most important variables are as follows (in order of importance):
+
+1. sex
+2. class
+3. port
+4. age
+
+Female upper class have the highest chance of survival and all males have the lowest chance.
+
+# Question 6
+
+Test and add your predictions to your data. Create a confusion matrix. Write down in detail what this tells you for this specific dataset.
+
+```{r}
+
+# add the predictions
+
+titanic_test_pred <- titanic_test %>% 
+  add_predictions(titanic_tree, type = "class")
+
+
+```
+
+```{r}
+
+# look at the variables 
+
+titanic_test_pred %>% 
+  select(sex, class, port_embarkation, age_status, survived_flag, pred)
+
+
+```
+
+```{r}
+
+titanic_cm <- titanic_test_pred %>%
+              conf_mat(truth = survived_flag, estimate = pred)
+
+titanic_cm
+
+```
+
+
+```{r}
+
+titanic_accuracy <- titanic_test_pred %>% 
+  accuracy(truth = survived_flag, estimate = pred)
+
+titanic_accuracy
+
+```
+
+```{r}
+
+confusionMatrix(titanic_test_pred$pred, titanic_test_pred$survived_flag)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
