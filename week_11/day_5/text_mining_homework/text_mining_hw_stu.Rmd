@@ -1,0 +1,150 @@
+---
+title: "Text Mining Homework"
+author: "Stuart McColl"
+date: "16/01/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load in libraries and data
+
+```{r, message=FALSE, warning=FALSE}
+
+library(tidytext)
+library(tidyverse)
+library(janeaustenr)
+
+```
+
+```{r}
+
+prideprejudice_df <- tibble(
+  sentence = 1:length(prideprejudice),
+  text = prideprejudice
+) %>% 
+  unnest_tokens(word, text)
+
+prideprejudice_df
+
+prideprejudice_df %>% 
+  count(word, sort = T)
+
+```
+
+
+```{r}
+
+prideprejudice_df %>% 
+  anti_join(stop_words, by = "word") %>% 
+  count(word, sort = T)
+
+
+```
+
+```{r}
+
+prideprejudice_df <- tibble(
+  sentence = 1:length(prideprejudice),
+  text = prideprejudice
+) %>% 
+  unnest_tokens(word, text) %>% 
+  anti_join(stop_words) %>% 
+  left_join(get_sentiments("bing"))
+
+prideprejudice_df
+
+
+```
+
+```{r}
+
+prideprejudice_df %>% 
+  filter(sentiment == "positive") %>% 
+  count(word, sort = T)
+
+```
+
+
+```{r}
+
+prideprejudice_df %>% 
+  filter(sentiment == "negative") %>% 
+  count(word, sort = T)
+
+
+```
+
+
+```{r}
+
+sensesensibility_df <- tibble(
+  sentence = 1:length(sensesensibility),
+  text = sensesensibility
+) %>% 
+  unnest_tokens(word, text)
+
+sensesensibility_df
+
+sensesensibility_df %>% 
+  count(word, sort = T)
+
+```
+
+```{r}
+
+sensesensibility_df %>% 
+  anti_join(stop_words, by = "word") %>% 
+  count(word, sort = T)
+
+```
+
+
+```{r}
+
+sensesensibility_df <- tibble(
+  sentence = 1:length(sensesensibility),
+  text = sensesensibility
+) %>% 
+  unnest_tokens(word, text) %>% 
+  anti_join(stop_words) %>% 
+  left_join(get_sentiments("bing"))
+
+sensesensibility_df
+
+```
+
+
+```{r}
+
+sensesensibility_df %>% 
+  filter(sentiment == "positive") %>% 
+  count(word, sort = T)
+
+```
+
+```{r}
+
+sensesensibility_df %>% 
+  filter(sentiment == "negative") %>% 
+  count(word, sort = T)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
