@@ -1,0 +1,159 @@
+---
+title: "Logistic Regression Homework"
+author: "Stuart McColl"
+date: "16/01/2021"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Load in libraries and data
+
+```{r, message=FALSE, warning=FALSE}
+
+library(car)
+library(tidyverse)
+library(modelr)
+library(GGally)
+library(relaimpo)
+library(lm.beta)
+library(leaps)
+library(glmulti)
+library(caret)
+library(janitor)
+library(lubridate)
+
+
+orange_juice_raw <- read_csv("data/orange_juice.csv") %>% 
+  clean_names()
+
+```
+
+# Check out the data
+
+```{r}
+
+summary(orange_juice_raw)
+glimpse(orange_juice_raw)
+
+```
+
+purchase column - change to logical
+weekof_purchase - change to factor
+store_id - change to factor
+special_ch - change to logical
+special_mm - change to logical
+loyal_ch - remove
+price_diff - remove, can be worked out with the other two variables
+store7 - remove as store id includes store 7 
+pct_disc_mm - remove
+pct_disc_ch - remove
+list_price_diff - remove
+store - remove as store id is better, also includes store 7
+
+```{r}
+
+unique(orange_juice_raw$store_id)
+unique(orange_juice_raw$store)
+
+
+```
+
+
+# Change column class for modelling
+
+```{r}
+
+orange_juice_clean <- orange_juice_raw %>% 
+  mutate(purchase_mm = as.logical(if_else(purchase == "MM", T, F))) %>% 
+  mutate(weekof_purchase = as_date(weekof_purchase)) %>% 
+  mutate(store_id = as.factor(store_id)) %>% 
+  mutate(special_ch = as.logical((ifelse(special_ch == 1, T, F)))) %>% 
+  mutate(special_mm = as.logical(ifelse(special_mm == 1, T, F)))
+
+glimpse(orange_juice_clean)
+
+
+```
+
+# Remove unhelpful columnns
+
+```{r}
+
+orange_juice_clean <- orange_juice_clean %>% 
+  dplyr::select(-c(purchase, loyal_ch, price_diff, store7, pct_disc_mm, pct_disc_ch, 
+            list_price_diff, store))
+
+glimpse(orange_juice_clean)
+
+```
+
+
+# Change weekof_purchase into quarters
+
+```{r}
+
+orange_juice_clean <- orange_juice_clean %>% 
+  mutate(
+    quarter = as.factor(quarter(weekof_purchase))
+  ) %>% 
+  dplyr::select(-weekof_purchase)
+
+glimpse(orange_juice_clean)
+
+
+```
+
+
+# Check for aliased columns
+
+```{r}
+
+alias(purchase_mm ~ ., data = orange_juice_clean)
+
+```
+
+# Remove aliased columns
+
+```{r}
+
+orange_juice_clean <- orange_juice_clean %>% 
+  dplyr::select(-c(sale_price_mm, sale_price_ch))
+
+alias(purchase_mm ~ ., data = orange_juice_clean)
+
+```
+
+# Check cleaned data
+
+```{r}
+
+glimpse(orange_juice_clean)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
