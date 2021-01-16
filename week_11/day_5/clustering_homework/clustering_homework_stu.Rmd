@@ -38,3 +38,79 @@ mall_raw <- read_csv("data/mall_customers.csv") %>%
 
 ```
 
+
+
+```{r}
+
+mall_raw %>% 
+  ggplot(aes(x = annual_income_k, y = spending_score_1_100, colour = age)) +
+  geom_point() 
+
+
+```
+
+
+```{r}
+
+summary(mall_raw)
+
+```
+
+
+```{r}
+
+mall_income_spending <- mall_raw %>% 
+  select(annual_income_k, spending_score_1_100)
+
+```
+
+
+```{r}
+
+mall_scale <- mall_income_spending %>%
+  mutate_all(scale)
+
+mall_clustered <- kmeans(mall_scale, centers = 5, nstart = 25)
+
+mall_clustered
+
+```
+
+
+```{r}
+
+tidy(mall_clustered,
+     col.names = colnames(mall_scale))
+
+```
+
+
+```{r}
+
+glance(mall_clustered)
+
+```
+
+
+```{r}
+
+augment(mall_clustered, mall_raw)
+
+```
+
+```{r}
+
+fviz_nbclust(mall_scale, kmeans, method = "silhouette", nstart = 25)
+
+```
+
+
+
+
+
+
+
+
+
+
+
