@@ -1,0 +1,40 @@
+---
+title: "Clustering Homework"
+author: "Stuart McColl"
+date: "16/01/2021"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Load in libraries and data
+
+```{r, message=FALSE, warning=FALSE}
+
+library(janitor)
+library(yardstick)
+library(modelr)
+library(fastDummies)
+library(broom)
+library(rpart)
+library(rpart.plot)
+library(tidyverse)
+library(factoextra)
+
+
+mall_raw <- read_csv("data/mall_customers.csv") %>% 
+  clean_names()
+
+```
+

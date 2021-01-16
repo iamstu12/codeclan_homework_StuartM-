@@ -243,7 +243,8 @@ purchase_mm ~ 1 + store_id + quarter + price_ch + price_mm +
   special_ch:price_ch + special_ch:price_mm + special_ch:disc_ch + 
   special_ch:disc_mm + store_id:price_mm + store_id:special_ch + 
   quarter:price_mm + quarter:special_ch  
-
+  
+  
 
 
 
