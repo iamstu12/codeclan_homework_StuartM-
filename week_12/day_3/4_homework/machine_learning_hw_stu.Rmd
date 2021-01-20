@@ -1,0 +1,105 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(tidyverse)
+library(janitor)
+library(GGally)
+library(glmulti)
+
+cars_raw <- read_csv("car_dekho_details.csv")
+
+cars_raw
+
+```
+
+```{r}
+
+glimpse(cars_raw)
+
+```
+
+
+```{r}
+
+cars_clean <- cars_raw %>% 
+  select(-name)
+
+cars_clean
+
+```
+
+```{r}
+
+alias(selling_price ~ ., data = cars_clean)
+
+```
+
+
+```{r}
+
+ggpairs(cars_clean)
+
+```
+
+
+```{r}
+
+test_indices <- sample(1:nrow(cars_clean), size = as.integer(nrow(cars_clean) * 0.2))
+
+train <- cars_clean %>%
+  slice(-test_indices)
+
+test <- cars_clean %>%
+  slice(test_indices)
+
+
+```
+
+
+```{r}
+
+cars_dummy <- cars_clean %>%
+  fastDummies::dummy_cols(select_columns = "fuel", remove_first_dummy = T) %>% 
+  fastDummies::dummy_cols(select_columns = "seller_type", remove_first_dummy = T) %>% 
+  fastDummies::dummy_cols(select_columns = "transmission", remove_first_dummy = T) %>% 
+  fastDummies::dummy_cols(select_columns = "owner", remove_first_dummy = T)
+
+cars_dummy
+
+cars_dummy <- cars_dummy %>% 
+  select(-c(fuel, seller_type, transmission, owner))
+
+cars_dummy
+
+```
+
+
+```{r}
+
+glmulti_ga_search_with_pairs_aic <- glmulti(
+  selling_price ~ .,
+  data = cars_dummy,
+  level = 2,               # Interactions considered
+  method = "g",            # Genetic algorithm approach
+  crit = "aic",            # AIC as criteria
+  confsetsize = 10,        # Keep 10 best models
+  marginality = TRUE,      # consider pairs only if both main effects in model
+  plotty = F, 
+  report = T,              # No plots, but provide interim reports
+  fitfunction = "glm",     # glm function
+  family = binomial(link = "logit")) # binomial family for logistic regression
+
+summary(glmulti_ga_search_with_pairs_aic)
+
+```
+
+
+
+
+
+
+
